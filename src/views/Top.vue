@@ -1,52 +1,55 @@
 <template>
- <div class="text-5xl text-bold">tailwind css</div>
-
-<div>
+  <div>
     <div>
-      <Select v-model="city" :options="cityOptions" placeholder="都道府県"></Select>
-    </div>
-    <div>
-      <Select v-model="category" :options="categoryOptions" placeholder="カテゴリー"></Select>
-    </div>
-    <div>
-      <Select v-model="price" :options="priceOptions" placeholder="金額"></Select>
-    </div>
-    <div>
-      <Select v-model="sortOrder" :options="sortOrderOptions" placeholder="順"></Select>
-    </div>
-    <div>
-      <v-btn color="success" @click="filterData">Filter Data</v-btn>
-    </div>
-    <div></div>
-    <template v-if="restaurants.length === 0">
-      <div />
       <div>
-        <div id="guy-container" class="mdc-toolbar-fixed-adjust">
-          <img class="guy" src="/img/guy_fireats.png" />
-          <div class="text">
-            This app is connected to the Firebase project "<b>{{ appData.projectId }}</b
-            >".<br />
-            <br />
-            Your Cloud Firestore has no documents in <b>/restaurants/</b>.
-          </div>
-          <br />
-          <v-btn color="success" @click="importData">Import Data</v-btn>
-        </div>
+        <Select v-model="city" :options="cityOptions" placeholder="都道府県"></Select>
       </div>
-      <div />
-    </template>
-    <div v-for="restaurant in restaurants" :key="restaurant.id" align-content-center="true">
-      <div @click="link(restaurant.id)" max-width="80%" :style="{ margin: 'auto' }">
-        <img :src="restaurant.photo" :style="{ width: '100%' }" /><br />
-        <span v-for="(price, key) in getPrice(restaurant.price)" :style="{ position: 'relative', float: 'right' }" :key="`${restaurant.id}price${key}`">{{
-          price.value
-        }}</span>
-        <h2>{{ restaurant.name }}</h2>
-        <v-icon v-for="star in getStar(restaurant.avgRating)" v-bind:key="star.id" :style="{ color: '#feb22c' }">{{ star.value }}</v-icon
-        ><br />
-        {{ restaurant.city }}
-        ●
-        {{ restaurant.category }}
+      <div>
+        <Select v-model="category" :options="categoryOptions" placeholder="カテゴリー"></Select>
+      </div>
+      <div>
+        <Select v-model="price" :options="priceOptions" placeholder="金額"></Select>
+      </div>
+      <div>
+        <Select v-model="sortOrder" :options="sortOrderOptions" placeholder="順"></Select>
+      </div>
+      <div>
+        <v-btn color="success" @click="filterData">Filter Data</v-btn>
+      </div>
+      <div></div>
+    </div>
+    <div class="flex flex-wrap">
+      <template v-if="restaurants.length === 0">
+        <div />
+        <div>
+          <div id="guy-container" class="mdc-toolbar-fixed-adjust">
+            <img class="guy" src="/img/guy_fireats.png" />
+            <div class="text">
+              This app is connected to the Firebase project "<b>{{ appData.projectId }}</b
+              >".<br />
+              <br />
+              Your Cloud Firestore has no documents in <b>/restaurants/</b>.
+            </div>
+            <br />
+            <v-btn color="success" @click="importData">Import Data</v-btn>
+          </div>
+        </div>
+        <div />
+      </template>
+      <div class="w-1/3" v-for="restaurant in restaurants" :key="restaurant.id" >
+        <div @click="link(restaurant.id)">
+          <img :src="restaurant.photo" /><br />
+          {{ restaurant.name }}
+          <span v-for="(price, key) in getPrice(restaurant.price)" :key="key">
+              {{price.value}}
+          </span><br/>
+          <span v-for="star in getStar(restaurant.avgRating)" key="star.id" class="material-icons text-yellow-500">
+            {{ star.value }}
+          </span><br />
+          {{ restaurant.city }}
+          ●
+          {{ restaurant.category }}
+        </div>
       </div>
     </div>
   </div>
