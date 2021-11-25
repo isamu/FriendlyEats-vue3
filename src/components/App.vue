@@ -71,16 +71,10 @@ export default {
           const message = JSON.parse(e.message);
           this.setError("custom", message.error.message);
         } catch (e) {
-          this.setError(
-            "custom",
-            "invalid api key or not set Anonymous user on Firebase Authentication."
-          );
+          this.setError("custom", "invalid api key or not set Anonymous user on Firebase Authentication.");
         }
       } else {
-        this.setError(
-          "custom",
-          "invalid api key or not set Anonymous user on Firebase Authentication."
-        );
+        this.setError("custom", "invalid api key or not set Anonymous user on Firebase Authentication.");
       }
     }
   },

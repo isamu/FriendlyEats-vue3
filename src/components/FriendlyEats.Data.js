@@ -1,11 +1,5 @@
 import { db } from "@/firebase/utils";
-import {
-  collection,
-  query,
-  orderBy,
-  limit,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
 
 // eslint-disable-next-line
 export const addRestaurant = (data) => {
@@ -18,11 +12,7 @@ export const getAllRestaurants = () => {
   /*
     TODO: Retrieve list of restaurants
   */
-  const getAllRestaurantsQuery = query(
-    collection(db, "restaurants"),
-    orderBy("avgRating", "desc"),
-    limit(50)
-  );
+  const getAllRestaurantsQuery = query(collection(db, "restaurants"), orderBy("avgRating", "desc"), limit(50));
 
   return getAllRestaurantsQuery;
 };
@@ -66,8 +56,5 @@ export const addRating = (restaurantID, rating) => {
 };
 
 export const getRating = (id) => {
-  return collection(db, `restaurants/${id}/ratings`).orderBy(
-    "timestamp",
-    "desc"
-  );
+  return collection(db, `restaurants/${id}/ratings`).orderBy("timestamp", "desc");
 };

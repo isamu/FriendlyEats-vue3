@@ -1,32 +1,16 @@
 <template>
   <div>
     <div>
-      <Select
-        v-model="city"
-        :options="cityOptions"
-        placeholder="都道府県"
-      ></Select>
+      <Select v-model="city" :options="cityOptions" placeholder="都道府県"></Select>
     </div>
     <div>
-      <Select
-        v-model="category"
-        :options="categoryOptions"
-        placeholder="カテゴリー"
-      ></Select>
+      <Select v-model="category" :options="categoryOptions" placeholder="カテゴリー"></Select>
     </div>
     <div>
-      <Select
-        v-model="price"
-        :options="priceOptions"
-        placeholder="金額"
-      ></Select>
+      <Select v-model="price" :options="priceOptions" placeholder="金額"></Select>
     </div>
     <div>
-      <Select
-        v-model="sortOrder"
-        :options="sortOrderOptions"
-        placeholder="順"
-      ></Select>
+      <Select v-model="sortOrder" :options="sortOrderOptions" placeholder="順"></Select>
     </div>
     <div>
       <v-btn color="success" @click="filterData">Filter Data</v-btn>
@@ -38,9 +22,7 @@
         <div id="guy-container" class="mdc-toolbar-fixed-adjust">
           <img class="guy" src="/img/guy_fireats.png" />
           <div class="text">
-            This app is connected to the Firebase project "<b>{{
-              appData.projectId
-            }}</b
+            This app is connected to the Firebase project "<b>{{ appData.projectId }}</b
             >".<br />
             <br />
             Your Cloud Firestore has no documents in <b>/restaurants/</b>.
@@ -51,29 +33,14 @@
       </div>
       <div />
     </template>
-    <div
-      v-for="restaurant in restaurants"
-      :key="restaurant.id"
-      align-content-center="true"
-    >
-      <div
-        @click="link(restaurant.id)"
-        max-width="80%"
-        :style="{ margin: 'auto' }"
-      >
+    <div v-for="restaurant in restaurants" :key="restaurant.id" align-content-center="true">
+      <div @click="link(restaurant.id)" max-width="80%" :style="{ margin: 'auto' }">
         <img :src="restaurant.photo" :style="{ width: '100%' }" /><br />
-        <span
-          v-for="(price, key) in getPrice(restaurant.price)"
-          :style="{ position: 'relative', float: 'right' }"
-          :key="`${restaurant.id}price${key}`"
-          >{{ price.value }}</span
-        >
+        <span v-for="(price, key) in getPrice(restaurant.price)" :style="{ position: 'relative', float: 'right' }" :key="`${restaurant.id}price${key}`">{{
+          price.value
+        }}</span>
         <h2>{{ restaurant.name }}</h2>
-        <v-icon
-          v-for="star in getStar(restaurant.avgRating)"
-          v-bind:key="star.id"
-          :style="{ color: '#feb22c' }"
-          >{{ star.value }}</v-icon
+        <v-icon v-for="star in getStar(restaurant.avgRating)" v-bind:key="star.id" :style="{ color: '#feb22c' }">{{ star.value }}</v-icon
         ><br />
         {{ restaurant.city }}
         ●

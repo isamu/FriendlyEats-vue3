@@ -1,23 +1,13 @@
 <template>
   <v-layout row wrap>
     <template v-if="restaurant">
-      <v-flex
-        xs12
-        :style="{ backgroundImage: 'url(' + restaurant.photo + ')' }"
-        class="imageHeader"
-      >
+      <v-flex xs12 :style="{ backgroundImage: 'url(' + restaurant.photo + ')' }" class="imageHeader">
         <h2>{{ restaurant.name }}</h2>
-        <v-icon
-          v-for="star in getStar(restaurant.avgRating)"
-          v-bind:key="star.id"
-          :style="{ color: '#fff' }"
-          >{{ star.value }}</v-icon
+        <v-icon v-for="star in getStar(restaurant.avgRating)" v-bind:key="star.id" :style="{ color: '#fff' }">{{ star.value }}</v-icon
         ><br />
         {{ restaurant.city }} / {{ restaurant.category }}<br />
         <div class="iconBox">
-          <v-icon class="iconHover" @click="showModal = true"
-            >add_circle</v-icon
-          >
+          <v-icon class="iconHover" @click="showModal = true">add_circle</v-icon>
         </div>
       </v-flex>
       <template v-if="ratings.length === 0">
@@ -36,11 +26,7 @@
           <v-flex xs8 class="ratingBox">
             <div :style="{ marginBottom: '10px' }">
               <span class="ratingStar">
-                <v-icon
-                  v-for="(l, star) in getStar(rating.rating)"
-                  color="#feb22c"
-                  :key="l"
-                  >{{ star.value }}</v-icon
+                <v-icon v-for="(l, star) in getStar(rating.rating)" color="#feb22c" :key="l">{{ star.value }}</v-icon
                 ><br />
               </span>
               <span :style="{ color: '#999' }">{{ rating.userName }}</span>
@@ -60,11 +46,7 @@
               textAlign: 'center',
             }"
           >
-            <v-icon
-              v-for="star in getStar(selectedRating)"
-              v-bind:key="star.id"
-              v-on:mouseenter="changeRating(star)"
-            >
+            <v-icon v-for="star in getStar(selectedRating)" v-bind:key="star.id" v-on:mouseenter="changeRating(star)">
               {{ star.value }}
             </v-icon>
           </div>
@@ -73,12 +55,8 @@
           </div>
         </div>
         <div slot="footer">
-          <v-btn class="modal-default-button" @click="showModal = false">
-            CANCEL
-          </v-btn>
-          <v-btn class="modal-default-button" @click="saveRating()">
-            SAVE
-          </v-btn>
+          <v-btn class="modal-default-button" @click="showModal = false"> CANCEL </v-btn>
+          <v-btn class="modal-default-button" @click="saveRating()"> SAVE </v-btn>
         </div>
       </modal>
     </template>
