@@ -1,17 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Top from '@/views/Top';
-import Restaurant from '@/views/Restaurant';
+import Top from "@/views/Top";
+import Restaurant from "@/views/Restaurant";
 
 const routes = [
   {
-    path: '/',
-    name: 'index',
+    path: "/",
+    name: "index",
     component: Top,
   },
   {
-    path: '/restaurant/:id',
-    name: 'restaurant',
+    path: "/restaurant/:id",
+    name: "restaurant",
     component: Restaurant,
   },
 ];
@@ -22,4 +22,3 @@ const router = createRouter({
 });
 
 export default router;
-
