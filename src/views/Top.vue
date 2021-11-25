@@ -1,5 +1,7 @@
 <template>
-  <div>
+ <div class="text-5xl text-bold">tailwind css</div>
+
+<div>
     <div>
       <Select v-model="city" :options="cityOptions" placeholder="都道府県"></Select>
     </div>
