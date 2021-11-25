@@ -6,18 +6,24 @@ export const getRandomRestaurant = () => {
   const city = FriendlyEats.getRandomItem(FriendlyEats.data.cities);
   const price = Math.floor(Math.random() * 4) + 1;
   const photoID = Math.floor(Math.random() * 22) + 1;
-  const photo = 'https://storage.googleapis.com/firestorequickstarts.appspot.com/food_' + photoID + '.png';
-  
+  const photo =
+    "https://storage.googleapis.com/firestorequickstarts.appspot.com/food_" +
+    photoID +
+    ".png";
+
   return {
     category,
     price,
     photo,
     city,
-    name: FriendlyEats.getRandomItem(FriendlyEats.data.name) + " " + FriendlyEats.getRandomItem(FriendlyEats.data.name2),
+    name:
+      FriendlyEats.getRandomItem(FriendlyEats.data.name) +
+      " " +
+      FriendlyEats.getRandomItem(FriendlyEats.data.name2),
     numRatings: 0,
     avgRating: 0,
   };
-}
+};
 
 export const addMockRestaurants = () => {
   const promises = [];
@@ -32,15 +38,16 @@ export const addMockRestaurants = () => {
     }
   }
   return Promise.all(promises);
-}
+};
 
-export const addMockRatings = async (restaurantID) =>  {
+export const addMockRatings = async (restaurantID) => {
   const ratings = [];
   for (let r = 0; r < 10 * Math.random(); r++) {
-    let rating = FriendlyEats.data.ratings[
-      parseInt(FriendlyEats.data.ratings.length * Math.random())
-    ];
-    rating.userName = 'Bot (Web)';
+    let rating =
+      FriendlyEats.data.ratings[
+        parseInt(FriendlyEats.data.ratings.length * Math.random())
+      ];
+    rating.userName = "Bot (Web)";
     rating.timestamp = new Date();
     const res = await FriendlyEatsData.addRating(restaurantID, rating);
     if (!res) {

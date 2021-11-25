@@ -4,48 +4,19 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "format": "prettier --write 'src/**/*.{js,ts,vue}'"
   },
   "dependencies": {
-    "@mdi/font": "^6.5.95",
     "core-js": "^3.19.1",
     "firebase": "^9.5.0",
-    "firebaseui": "^6.0.0",
     "lodash.template": ">=4.5.0",
-    "material-design-icons-iconfont": "^6.1.1",
     "vue": "^3.2.22",
-    "vue-i18n": "^8.26.7",
     "vue-router": "^4.0.12",
-    "vue-select": "^3.16.0",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "eslint": "^7.21.0",
-    "eslint-plugin-vue": "^7.0.0-0"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {
-      "no-console": "off"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
+    "prettier": "^2.5.0"
+  }
 }

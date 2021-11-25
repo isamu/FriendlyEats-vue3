@@ -1,5 +1,11 @@
 import { db } from "@/firebase/utils";
-import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+} from "firebase/firestore";
 
 // eslint-disable-next-line
 export const addRestaurant = (data) => {
@@ -12,10 +18,12 @@ export const getAllRestaurants = () => {
   /*
     TODO: Retrieve list of restaurants
   */
-  const getAllRestaurantsQuery = query(collection(db, 'restaurants'),
-                                       orderBy('avgRating', 'desc'),
-                                       limit(50));
-  
+  const getAllRestaurantsQuery = query(
+    collection(db, "restaurants"),
+    orderBy("avgRating", "desc"),
+    limit(50)
+  );
+
   return getAllRestaurantsQuery;
 };
 
@@ -27,7 +35,7 @@ export const getDocumentsInQuery = (query, renderer) => {
   return onSnapshot(query, (snapshot) => {
     if (!snapshot.size) return renderer.empty();
     snapshot.docChanges().forEach((change) => {
-      if (change.type === 'removed') {
+      if (change.type === "removed") {
         renderer.remove(change.doc);
       } else {
         renderer.display(change.doc);
@@ -58,5 +66,8 @@ export const addRating = (restaurantID, rating) => {
 };
 
 export const getRating = (id) => {
-  return collection(db, `restaurants/${id}/ratings`).orderBy('timestamp', 'desc');
-}
+  return collection(db, `restaurants/${id}/ratings`).orderBy(
+    "timestamp",
+    "desc"
+  );
+};

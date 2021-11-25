@@ -30,8 +30,8 @@
       <modal v-if="showModal" @close="showModal = false">
         <h3 slot="header">Error</h3>
         <div slot="body">
-          <div v-if="errorType=='custom'">
-            {{this.errorMessage}}
+          <div v-if="errorType == 'custom'">
+            {{ this.errorMessage }}
           </div>
           <div v-else v-html="$t(this.errorType)" />
         </div>
@@ -42,20 +42,20 @@
 
 <script>
 import { auth } from "../firebase/utils";
-import modal from '@/components/modal';
+import modal from "@/components/modal";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     modal,
   },
-  data () {
+  data() {
     return {
       navBar: false,
       showModal: false,
       errorType: null,
       errorMessage: "",
-    }
+    };
   },
   async created() {
     // this.$eventHub.$on('openModal', this.openModal);
@@ -65,39 +65,44 @@ export default {
       console.log(user);
     } catch (e) {
       if (e.code === "auth/admin-restricted-operation") {
-        this.setError('app.noAuth');
-      } else if(e.code === "auth/internal-error") {
+        this.setError("app.noAuth");
+      } else if (e.code === "auth/internal-error") {
         try {
-          const message = JSON.parse(e.message)
+          const message = JSON.parse(e.message);
           this.setError("custom", message.error.message);
         } catch (e) {
-          this.setError("custom", "invalid api key or not set Anonymous user on Firebase Authentication.");
+          this.setError(
+            "custom",
+            "invalid api key or not set Anonymous user on Firebase Authentication."
+          );
         }
       } else {
-        this.setError("custom", "invalid api key or not set Anonymous user on Firebase Authentication.");
+        this.setError(
+          "custom",
+          "invalid api key or not set Anonymous user on Firebase Authentication."
+        );
       }
     }
   },
-  computed: {
-  },
+  computed: {},
   methods: {
-    updateNaviBar: function() {
-      this.navBar =  !this.navBar;
+    updateNaviBar: function () {
+      this.navBar = !this.navBar;
     },
-    setError: function(type, message=null) {
+    setError: function (type, message = null) {
       this.showModal = true;
       this.errorType = type;
       this.errorMessage = message;
     },
-    openModal: function(data) {
+    openModal: function (data) {
       this.setError(data.type, data.message);
     },
   },
-}
+};
 </script>
 
 <style>
-  p {
+p {
   margin-bottom: 2px;
-  }
+}
 </style>
