@@ -58,7 +58,7 @@ export default {
     }
   },
   async created() {
-    this.$eventHub.$on('openModal', this.openModal);
+    // this.$eventHub.$on('openModal', this.openModal);
 
     try {
       const user = await auth().signInAnonymously();

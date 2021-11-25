@@ -1,5 +1,5 @@
-import { db } from "../firebase/utils";
-import { collection } from "firebase/firestore"
+import { db } from "@/firebase/utils";
+import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
 
 // eslint-disable-next-line
 export const addRestaurant = (data) => {
@@ -12,6 +12,11 @@ export const getAllRestaurants = () => {
   /*
     TODO: Retrieve list of restaurants
   */
+  const getAllRestaurantsQuery = query(collection(db, 'restaurants'),
+                                       orderBy('avgRating', 'desc'),
+                                       limit(50));
+  
+  return getAllRestaurantsQuery;
 };
 
 // eslint-disable-next-line
@@ -19,6 +24,16 @@ export const getDocumentsInQuery = (query, renderer) => {
   /*
     TODO: Render all documents in the provided query
   */
+  return onSnapshot(query, (snapshot) => {
+    if (!snapshot.size) return renderer.empty();
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === 'removed') {
+        renderer.remove(change.doc);
+      } else {
+        renderer.display(change.doc);
+      }
+    });
+  });
 };
 
 // eslint-disable-next-line

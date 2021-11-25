@@ -1,25 +1,25 @@
 <template>
-<v-layout row wrap>
-  <v-flex xs2>
+<div>
+  <div>
     <Select v-model="city" :options="cityOptions" placeholder="都道府県"></Select>
-  </v-flex>
-  <v-flex xs2>
+  </div>
+  <div>
     <Select v-model="category" :options="categoryOptions" placeholder="カテゴリー"></Select>
-  </v-flex>
-  <v-flex xs2>
+  </div>
+  <div>
     <Select  v-model="price" :options="priceOptions" placeholder="金額" ></Select>
-  </v-flex>
-  <v-flex xs2>
+  </div>
+  <div>
     <Select v-model="sortOrder" :options="sortOrderOptions" placeholder="順"></Select>
-  </v-flex>
-  <v-flex xs2>
+  </div>
+  <div>
     <v-btn color="success" @click="filterData" >Filter Data</v-btn> 
-  </v-flex>
-  <v-flex xs2>
-  </v-flex>
+  </div>
+  <div>
+  </div>
   <template v-if="restaurants.length === 0">
-    <v-flex xs2 />
-    <v-flex xs8>
+    <div />
+    <div>
       <div id="guy-container" class="mdc-toolbar-fixed-adjust">
         <img class="guy" src="/img/guy_fireats.png" />
         <div class="text">
@@ -30,11 +30,11 @@
         <br />
         <v-btn color="success" @click="importData" >Import Data</v-btn>
       </div>
-    </v-flex>
-    <v-flex xs4 />
+    </div>
+    <div  />
   </template>
-  <v-flex xs4 v-for="restaurant in restaurants" :key="restaurant.id" align-content-center=true>
-    <v-card @click="link(restaurant.id)" max-width="80%" :style="{'margin': 'auto'}">
+  <div v-for="restaurant in restaurants" :key="restaurant.id" align-content-center=true>
+    <div @click="link(restaurant.id)" max-width="80%" :style="{'margin': 'auto'}">
       <img :src="restaurant.photo" :style="{ 'width': '100%'}"/><br/>
       <span v-for="(price, key) in getPrice(restaurant.price)" :style="{ 'position': 'relative', 'float': 'right'}" :key="`${restaurant.id}price${key}`">{{price.value}}</span>
       <h2>{{restaurant.name}}</h2>
@@ -42,54 +42,49 @@
       {{restaurant.city}}
       ●
       {{restaurant.category}}
-    </v-card>
-  </v-flex>
-</v-layout>
+    </div>
+  </div>
+</div>
 </template>
 
 <script>
+import { defineComponent, reactive, onUnmounted } from "vue";
+
 import * as FriendlyEats from '@/components/FriendlyEats';
 import * as FriendlyEatsData from '@/components/FriendlyEats.Data';
 import * as FriendlyEatsMock from '@/components/FriendlyEats.Mock';
-
 import Select from '@/components/Select';
 
-export default {
+import { useRouter } from "vue-router";
+
+import { app } from '@/firebase/utils';
+
+export default defineComponent({
   name: 'Top',
   components: {Select},
-  data() {
-    return {
-      restaurants: [],
-      detacher: null,
-      appData: {},
-      categoryOptions: FriendlyEats.data.categories,
-      category: null,
-      cityOptions: FriendlyEats.data.cities,
-      city: null,
-      priceOptions: [ "$", "$$", "$$$", "$$$$"],
-      price: null,
-      sortOrderOptions: ['Rating', 'Reviews'],
-      sortOrder: null,
-    };
-  },
-  methods: {
-    importData: async function() {
+  setup() {
+    const router = useRouter();
+    const restaurants = reactive([]);
+    let detacher = null;
+
+    const importData =  async () => {
       try {
         await FriendlyEatsMock.addMockRestaurants();
       } catch (e) {
+        // todo fix
         this.$eventHub.$emit('openModal', {
           type: 'top.addRestaurant',
         });
       }
-    },
-    getPrice: function(price) {
+    };
+    const  getPrice = (price) => {
       const ret = [];
       for (let r = 0; r < price; r += 1) {
         ret.push({id: r, value: "$"});
       }
       return ret;
-    },
-    getStar: function(rating) {
+    };
+    const getStar = (rating) => {
       const ret = [];
       for (let r = 0; r < 5; r += 1) {
         if (r < Math.floor(rating)) {
@@ -99,75 +94,96 @@ export default {
         }
       }
       return ret;
-    },
-    filterData: function() {
+    };
+    const filterData = () => {
+      // TODO 
       const filters = {
         city: this.city || "Any",
         category: this.category || "Any",
         price: this.price || "Any",
         sortOrder: this.sortOrder,
       }
-      if (this.detacher) {
-        this.detacher();
+      if (detacher) {
+        detacher();
       }
       this.getFilteredRestaurants(filters);
-    },
-    link: function(id) {
-      this.$router.push({ name: 'restaurant', params: { id } })
-    },
-    renderer: function() {
+    };
+    const link = (id) => {
+      router.push({ name: 'restaurant', params: { id } })
+    };
+    const renderer = () => {
       return {
         remove: (doc) => {
-          const index = this.restaurants.findIndex((element) => { return element.id === doc.id });
-          this.$delete(this.restaurants, index);
+          const index = restaurants.findIndex((element) => { return element.id === doc.id });
+          restaurants.splice(index, 1);
         },
         display: (doc) => {
           const data = doc.data();
           data.id = doc.id;
 
-          const index = this.restaurants.findIndex((element) => { return element.id === doc.id });
+          const index = restaurants.findIndex((element) => { return element.id === doc.id });
           if (index !== -1) {
-            this.$set(this.restaurants, index, data);
+            restaurants[index] = data;
           } else {
-            this.restaurants.push(data);
+            restaurants.push(data);
           }
+          console.log(restaurants);
         },
         empty: () => {
-          this.restaurants = [];
+          restaurants.splice(0, restaurants.length);
         },
       }
-    },
-    watchData: function(query) {
-      this.restaurants = [];
-      this.detacher = FriendlyEatsData.getDocumentsInQuery(query, this.renderer());
-    },
-    getAllRestaurants: function() {
+    };
+    const watchData = (query) => {
+      restaurants.splice(0, restaurants.length);
+      detacher = FriendlyEatsData.getDocumentsInQuery(query, renderer());
+    };
+    const getAllRestaurants = () => {
       const query = FriendlyEatsData.getAllRestaurants();
       if (query) {
-        this.watchData(query);
+        watchData(query);
       }
-    },
-    getFilteredRestaurants: function(filters) {
+    };
+    const getFilteredRestaurants = (filters) => {
       const query = FriendlyEatsData.getFilteredRestaurants(filters);
       if (query) {
-        this.watchData(query);
+        watchData(query);
       } else {
         this.$eventHub.$emit('openModal', {
           type: 'top.getFilteredRestaurants',
         });
       }
     }
+
+
+    const appData = app._options;
+    getAllRestaurants();
+  
+    onUnmounted(() => {
+      if (detacher) {
+        detacher();
+      }
+    });
+
+    return {
+      appData,
+      restaurants,
+      detacher,
+      categoryOptions: FriendlyEats.data.categories,
+      category: null,
+      cityOptions: FriendlyEats.data.cities,
+      city: null,
+      priceOptions: [ "$", "$$", "$$$", "$$$$"],
+      price: null,
+      sortOrderOptions: ['Rating', 'Reviews'],
+      sortOrder: null,
+
+      getPrice,
+      getStar,
+      link,
+    };
   },
-  created() {
-    // this.appData = firebase.app().options;
-    this.getAllRestaurants();
-  },
-  destroyed() {
-    if (this.detacher) {
-      this.detacher();
-    }
-  },  
-}
+});
 </script>
 
 <style>
