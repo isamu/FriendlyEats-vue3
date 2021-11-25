@@ -1,16 +1,16 @@
 <template>
 <v-layout row wrap>
   <v-flex xs2>
-    <vSelect v-model="city" :options="cityOptions" placeholder="都道府県"></vSelect>
+    <Select v-model="city" :options="cityOptions" placeholder="都道府県"></Select>
   </v-flex>
   <v-flex xs2>
-    <vSelect v-model="category" :options="categoryOptions" placeholder="カテゴリー"></vSelect>
+    <Select v-model="category" :options="categoryOptions" placeholder="カテゴリー"></Select>
   </v-flex>
   <v-flex xs2>
-    <vSelect  v-model="price" :options="priceOptions" placeholder="金額" ></vSelect>
+    <Select  v-model="price" :options="priceOptions" placeholder="金額" ></Select>
   </v-flex>
   <v-flex xs2>
-    <vSelect v-model="sortOrder" :options="sortOrderOptions" placeholder="順"></vSelect>
+    <Select v-model="sortOrder" :options="sortOrderOptions" placeholder="順"></Select>
   </v-flex>
   <v-flex xs2>
     <v-btn color="success" @click="filterData" >Filter Data</v-btn> 
@@ -51,13 +51,12 @@
 import * as FriendlyEats from '@/components/FriendlyEats';
 import * as FriendlyEatsData from '@/components/FriendlyEats.Data';
 import * as FriendlyEatsMock from '@/components/FriendlyEats.Mock';
-import firebase from 'firebase/app' ;
 
-import vSelect from 'vue-select';
+import Select from '@/components/Select';
 
 export default {
   name: 'Top',
-  components: {vSelect},
+  components: {Select},
   data() {
     return {
       restaurants: [],
@@ -160,7 +159,7 @@ export default {
     }
   },
   created() {
-    this.appData = firebase.app().options;
+    // this.appData = firebase.app().options;
     this.getAllRestaurants();
   },
   destroyed() {

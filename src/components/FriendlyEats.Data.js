@@ -1,6 +1,7 @@
-import * as firebase from "firebase/app"
-import "firebase/firestore";
+import { db } from "../firebase/utils";
+import { collection } from "firebase/firestore"
 
+// eslint-disable-next-line
 export const addRestaurant = (data) => {
   /*
     TODO: Implement adding a document
@@ -13,24 +14,28 @@ export const getAllRestaurants = () => {
   */
 };
 
+// eslint-disable-next-line
 export const getDocumentsInQuery = (query, renderer) => {
   /*
     TODO: Render all documents in the provided query
   */
 };
 
+// eslint-disable-next-line
 export const getRestaurant = (id) => {
   /*
     TODO: Retrieve a single restaurant
   */
 };
 
+// eslint-disable-next-line
 export const getFilteredRestaurants = (filters) => {
   /*
     TODO: Retrieve filtered list of restaurants
   */
 };
 
+// eslint-disable-next-line
 export const addRating = (restaurantID, rating) => {
   /*
     TODO: Retrieve add a rating to a restaurant
@@ -38,5 +43,5 @@ export const addRating = (restaurantID, rating) => {
 };
 
 export const getRating = (id) => {
-  return firebase.firestore().collection('restaurants').doc(id).collection('ratings').orderBy('timestamp', 'desc');
+  return collection(db, `restaurants/${id}/ratings`).orderBy('timestamp', 'desc');
 }

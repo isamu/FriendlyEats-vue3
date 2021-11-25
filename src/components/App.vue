@@ -41,13 +41,8 @@
 </template>
 
 <script>
-import firebase from 'firebase/app' ;
-import "firebase/auth";
-import "firebase/firestore";
-
+import { auth } from "../firebase/utils";
 import modal from '@/components/modal';
-
-import firebaseConfig from '@/firebase/firebase';
 
 export default {
   name: 'App',
@@ -65,14 +60,8 @@ export default {
   async created() {
     this.$eventHub.$on('openModal', this.openModal);
 
-    if (Object.keys(firebaseConfig).length === 0) {
-      this.setError('app.noConfig');
-      return ;
-    }
-    firebase.initializeApp(firebaseConfig);
-
     try {
-      const user = await firebase.auth().signInAnonymously();
+      const user = await auth().signInAnonymously();
       console.log(user);
     } catch (e) {
       if (e.code === "auth/admin-restricted-operation") {

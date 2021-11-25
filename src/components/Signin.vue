@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-import firebase from "firebase/app"
+import { auth } from "../firebase/utils";
 import * as firebaseui from "firebaseui"
 import "../../node_modules/firebaseui/dist/firebaseui.css"
 
@@ -12,7 +12,7 @@ export default {
   mounted() {
     let uiConfig = {
       signInOptions: [
-        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        auth.EmailAuthProvider.PROVIDER_ID,
         // firebase.auth.GoogleAuthProvider.PROVIDER_ID
       ],
       callbacks: {
@@ -21,9 +21,9 @@ export default {
         }
       }
         }
-    let ui = firebaseui.auth.AuthUI.getInstance();
+    let ui = auth.AuthUI.getInstance();
     if (!ui) {
-      ui = new firebaseui.auth.AuthUI(firebase.auth())
+      ui = new firebaseui.auth.AuthUI(auth())
     }
     ui.start("#firebaseui-auth-container", uiConfig)
   }

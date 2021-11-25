@@ -4,11 +4,11 @@
 </div>
 </template>
 <script>
-import firebase from "firebase/app"
+import { auth } from "../firebase/utils";
 
 export default {
   mounted() {
-    firebase.auth().signOut().then(() => {
+    auth().signOut().then(() => {
       window.location.href = '/'
     })
   }

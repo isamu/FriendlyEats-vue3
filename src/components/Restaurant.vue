@@ -22,19 +22,19 @@
       </v-flex>
     </template>
     <template v-else>
-      <template v-for="rating in ratings">
-        <v-flex xs2 v-bind:key="rating.id + 'a'" />
-        <v-flex xs8 class="ratingBox" v-bind:key="rating.id + 'b'">
+      <div v-for="(rating, k) in ratings" :key="k">
+        <v-flex xs2  />
+        <v-flex xs8 class="ratingBox">
           <div :style="{marginBottom: '10px'}">
             <span class="ratingStar">
-              <v-icon v-for="star in getStar(rating.rating)" v-bind:key="star.id" color="#feb22c">{{star.value}}</v-icon><br/>
+              <v-icon v-for="(l, star) in getStar(rating.rating)" color="#feb22c" :key="l">{{star.value}}</v-icon><br/>
             </span>
             <span :style="{color: '#999'}">{{rating.userName}}</span>
           </div>
           {{rating.text}}
         </v-flex>
-        <v-flex xs2 v-bind:key="rating.id + 'c'"/>
-      </template>
+        <v-flex xs2  />
+      </div>
     </template>
     <modal v-if="showModal" @close="showModal = false">
       <h3 slot="header">Add a Review</h3>
@@ -80,8 +80,7 @@ import * as FriendlyEatsData from '@/components/FriendlyEats.Data';
 import * as FriendlyEatsMock from '@/components/FriendlyEats.Mock';
 import modal from '@/components/modal';
 
-import firebase from 'firebase/app';
-import "firebase/auth";
+import { auth } from "../firebase/utils";
 
 export default {
   name: 'Top',
@@ -129,7 +128,7 @@ export default {
         text: this.message,
         userName: 'Anonymous (Web)',
         timestamp: new Date(),
-        userId: firebase.auth().currentUser.uid
+        userId: auth().currentUser.uid
       });
       this.message = "";
       this.selectedRating = 5;
