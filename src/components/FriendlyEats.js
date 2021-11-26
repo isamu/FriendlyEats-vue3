@@ -102,7 +102,7 @@ export const data = {
     },
     {
       rating: 5,
-      text: "アンジャッシュ渡部推薦レベル！！",
+      text: "とても美味しい",
     },
   ],
 };

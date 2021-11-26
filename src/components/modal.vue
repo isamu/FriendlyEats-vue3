@@ -3,22 +3,7 @@
     <div class="modal-mask" v-on:click="$emit('close')">
       <div class="modal-wrapper">
         <div class="modal-container" v-on:click.stop>
-          <div class="modal-header">
-            <h3>Error</h3>
-          </div>
-
-          <div class="modal-body">
-            <div v-if="store.state.errorType == 'custom'">
-              {{ store.state.errorMessage }}
-            </div>
-            <div v-else>
-              {{ store.state.errorType }}
-            </div>
-          </div>
-
-          <div class="modal-footer">
-            <slot name="footer"> </slot>
-          </div>
+          <slot />
         </div>
       </div>
     </div>
@@ -69,18 +54,6 @@ export default defineComponent({
   font-family: Helvetica, Arial, sans-serif;
 }
 
-.modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
-}
-.modal-header {
-  font-size: 1.25rem;
-  font-weight: 500;
-}
-
-.modal-body {
-  margin: 20px 0;
-}
 
 .modal-default-button {
   float: right;

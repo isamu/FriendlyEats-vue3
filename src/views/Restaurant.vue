@@ -16,7 +16,7 @@
             <img class="guy" src="/img/guy_fireats.png" />
             <div class="text">This restaurant has no ratings.<br /></div>
             <br />
-            <v-btn color="success" @click="AddRating">Add Rating</v-btn>
+            <button color="success" @click="AddRating()">Add Rating</button>
           </div>
         </div>
       </template>
@@ -46,17 +46,19 @@
               textAlign: 'center',
             }"
           >
-            <v-icon v-for="star in getStar(selectedRating)" v-bind:key="star.id" v-on:mouseenter="changeRating(star)">
-              {{ star.value }}
-            </v-icon>
+              <span v-for="star in getStar(selectedRating)" :key="star.id" v-on:mouseenter="changeRating(star)"
+                    class="material-icons text-yellow-500"
+                    >
+                {{ star.value }}
+              </span>
           </div>
           <div :style="{ borderBottom: '1px solid' }">
             <textarea v-model="message" class="textarea"> </textarea>
           </div>
         </div>
         <div slot="footer">
-          <v-btn class="modal-default-button" @click="showModal = false"> CANCEL </v-btn>
-          <v-btn class="modal-default-button" @click="saveRating()"> SAVE </v-btn>
+          <button class="modal-default-button" @click="showModal = false"> CANCEL </button>
+          <button class="modal-default-button" @click="saveRating()"> SAVE </button>
         </div>
       </modal>
     </template>
@@ -104,9 +106,7 @@ export default defineComponent({
       try {
         await FriendlyEatsMock.addMockRatings(id);
       } catch (e) {
-        this.$eventHub.$emit("openModal", {
-          type: "restaurant.addRating",
-        });
+        store.commit("openModal", "restaurant.addRating");
       }
     };
     const changeRating = (rating) => {
@@ -125,9 +125,7 @@ export default defineComponent({
       this.showModal = false;
 
       if (!res) {
-        this.$eventHub.$emit("openModal", {
-          type: "restaurant.addRating",
-        });
+        store.commit("openModal", "restaurant.addRating");
       }
     };
     (async () => {
