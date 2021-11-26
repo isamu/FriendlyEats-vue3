@@ -9,11 +9,11 @@ id: dist
 {{if .Meta.GA}}analytics account: {{.Meta.GA}}{{end}}
 
 ---
-# FriendlyEats-vue
+# FriendlyEats-vue3
 
-## FriendlyEats-vue について
+## FriendlyEats-vue3 について
 
-FriendlyEats-vueは、Vueを使ったFirebase / Cloud Firestoreのチュートリアル用のアプリです。Cloud Firestoreを学習するために最小限のプログラムをするだけでCloud Firestoreを使ったアプリケーションを作ることができます。
+FriendlyEats-vue3は、Vue 3を使ったFirebase / Cloud Firestoreのチュートリアル用のアプリです。Cloud Firestoreを学習するために最小限のプログラムをするだけでCloud Firestoreを使ったアプリケーションを作ることができます。
 
 ![sample](http://to-kyo.to/~isamu/code/1.jpg)
 
