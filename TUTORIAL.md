@@ -26,7 +26,7 @@ FriendlyEats-vue3は、Vue 3を使ったFirebase / Cloud Firestoreのチュー�
 このチュートリアルを始めるに当たって、必要な開発環境は以下となります。
 
 - Gitクライアント。GitHubのアカウントもあれば用意してください
-- Node.jsとnpm \- Nodeはversion 8をお薦めします
+- Node.jsとnpm \- Nodeはversion 14をお薦めします
 - IDEやテキストエディタ。たとえば Emacs, vim, WebStorm, Atom, VS Code, Sublime などからお好きなものを選んでください
 
 ## Firebase projectの作成と設定
@@ -94,7 +94,7 @@ FriendlyEats-vue3は、Vue 3を使ったFirebase / Cloud Firestoreのチュー�
 以下のコマンドを使って GitHub レポジトリをクローンします
 
 ```
-git clone https://github.com/isamu/FriendlyEats-vue
+git clone https://github.com/isamu/FriendlyEats-vue3
 ```
 * 自分の変更をGitHubで管理したい場合には、Forkしてcloneしてください
 
@@ -104,7 +104,7 @@ git clone https://github.com/isamu/FriendlyEats-vue
 
 
 ```
-cd FriendlyEats-vue
+cd FriendlyEats-vue3
 ```
 
 ### npmをインストールする
@@ -225,12 +225,11 @@ Firestoreデータは、コレクション、ドキュメント、フィール�
 1. `addRestaurant` 関数を探します
 1. 関数全体を以下のコードに置き換えます
 
-[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue/blob/master/src/components/FriendlyEats.Data.js#L4-L8.js)
+[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L4-L8.js)
 
 ```
 export const addRestaurant = (data) => {
-  const collection = firebase.firestore().collection('restaurants');
-  return collection.add(data);
+  return addDoc(collection(db, "restaurants"), data);
 };
 ```
 
@@ -274,16 +273,11 @@ Firebaseコンソールの「Cloud Firestore」タブに移動すると、`resta
 1. 関数全体を以下のコードに置き換えます
 
 
-[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue/blob/master/src/components/FriendlyEats.Data.js#L10-L14.js)
+[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L10-L14.js)
 
 ```
 export const getAllRestaurants = () => {
-  const query = firebase.firestore()
-        .collection('restaurants')
-        .orderBy('avgRating', 'desc')
-        .limit(50);
-
-  return query;
+  return query(collection(db, "restaurants"), orderBy("avgRating", "desc"), limit(50));
 };
 ```
 
@@ -295,25 +289,24 @@ export const getAllRestaurants = () => {
 - `getDocumentsInQuery` 関数を探します
 - 関数全体を以下のコードに置き換えます
 
-[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue/blob/master/src/components/FriendlyEats.Data.js#L16-L20.js)
+[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L16-L20.js)
 
 ```
 export const getDocumentsInQuery = (query, renderer) => {
-  return query.onSnapshot((snapshot) => {
+  return onSnapshot(query, (snapshot) => {
     if (!snapshot.size) return renderer.empty();
-
     snapshot.docChanges().forEach((change) => {
-      if (change.type === 'removed') {
-        renderer.remove(change.doc)
+      if (change.type === "removed") {
+        renderer.remove(change.doc);
       } else {
-        renderer.display(change.doc)
+        renderer.display(change.doc);
       }
     });
   });
 };
 ```
 
-上記のコードでは、クエリの結果に変更があるたびに`query.onSnapshot`をコールバックで呼び出します。
+上記のコードでは、クエリの結果に変更があるたびに`onSnapshot`をコールバックで呼び出します。
 
 - 最初のコールバックは、クエリの結果、全体のデータを`snapshot`として渡します。これは、Cloud Firestoreの`restaurants`コレクション全体(50件)を意味します。そして`change`には、全ての個々のドキュメントが渡され、それを`renderer.display`関数に渡します。
 - ドキュメントが削除された時には、`change.type`は`removed`となります。したがって、この場合、UIからレストランを削除する関数を呼び出します。
@@ -323,7 +316,7 @@ export const getDocumentsInQuery = (query, renderer) => {
 レストランのリストが変更されると、このリスナーは自動的にデータを更新します。
 Firebaseコンソールに移動して、レストランを手動で削除するか、名前を変更してみてください。サイト上のデータも更新されます。
 
-Note: `Query.get()`メソッドを使用することにより、更新通知を常時リアルタイムに受け取るのではなく、Cloud Firestoreからドキュメントを一度だけ取得することもできます。
+Note: `getDocs()`メソッドを使用することにより、更新通知を常時リアルタイムに受け取るのではなく、Cloud Firestoreからドキュメントを一度だけ取得することもできます。
 
 <img width="715" alt="sample.jpg" src="http://to-kyo.to/~isamu/code/11.jpg">
 
@@ -336,11 +329,11 @@ Note: `Query.get()`メソッドを使用することにより、更新通知を�
 1. `getRestaurant`関数を探します
 1. 関数全体を以下のコードに置き換えます
 
-[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue/blob/master/src/components/FriendlyEats.Data.js#L22-L26.js)
+[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L22-L26.js)
 
 ```
 export const getRestaurant = (id) => {
-  return firebase.firestore().collection('restaurants').doc(id).get();
+  return getDoc(doc(db, `restaurants/${id}`));
 };
 ```
 
@@ -371,7 +364,7 @@ var filteredQuery = query.where('category', '==', 'Dim Sum')
 1. `getFilteredRestaurants`を探します
 1. 関数全体を以下のコードに置き換えます
 
-[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue/blob/master/src/components/FriendlyEats.Data.js#L28-L32.js)
+[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L28-L32.js)
 
 ```
 export const getFilteredRestaurants = (filters) => {
@@ -416,7 +409,7 @@ The query requires an index. You can create it here: https://console.firebase.go
 
 ダウンロードしたソースコードのルートディレクトリに、firestore.indexes.jsonファイルがあります。このファイルには、フィルターに必要なすべてのインデックスが記述されています。
 
-[firestore.indexes.json](https://github.com/isamu/FriendlyEats-vue/blob/master/firestore.indexes.json)
+[firestore.indexes.json](https://github.com/isamu/FriendlyEats-vue3/blob/master/firestore.indexes.json)
 
 ```
 {
@@ -459,7 +452,7 @@ firebase deploy --only firestore:indexes
 1. `addRating` 関数を探す
 1. 関数全体を以下のコードに置き換えます
 
-[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue/blob/master/src/components/FriendlyEats.Data.js#L34-L38.js)
+[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L34-L38.js)
 
 ```
 export const addRating = (restaurantID, rating) => {
@@ -500,7 +493,7 @@ export const addRating = (restaurantID, rating) => {
 1. Cloud Firestore ＞ ルール タブをクリックします
 1. `rules_version = '2';` より下のコードを以下のルールに置き換えて「公開」をクリックします
 
-[firestore.rules](https://github.com/isamu/FriendlyEats-vue/blob/master/firestore.rules)
+[firestore.rules](https://github.com/isamu/FriendlyEats-vue3/blob/master/firestore.rules)
 
 ```
 service cloud.firestore {
