@@ -14,17 +14,13 @@
         <Select v-model="sortOrder" :options="sortOrderOptions" placeholder="順"></Select>
       </div>
       <div>
-        <button
-          class="h-10 w-32 rounded-lg bg-yellow-400"
-          @click="filterData">Filter Data</button>
+        <button class="h-10 w-32 rounded-lg bg-yellow-400" @click="filterData">Filter Data</button>
       </div>
       <div></div>
     </div>
     <div class="flex flex-wrap">
       <div class="text-center w-full" v-if="!appData?.projectId">
-        <div>
-          This app is <b>not</b> connected to the Firebase project.
-        </div>
+        <div>This app is <b>not</b> connected to the Firebase project.</div>
         setup Firebase
       </div>
       <div class="text-center w-full" v-else-if="restaurants.length === 0">
@@ -34,7 +30,7 @@
           </div>
           <div>
             This app is connected to the Firebase project "<b>{{ appData?.projectId }}</b
-                                                                                        >".<br />
+            >".<br />
             <br />
             Your Cloud Firestore has no documents in <b>/restaurants/</b>.
           </div>
@@ -47,11 +43,11 @@
           <img :src="restaurant.photo" /><br />
           {{ restaurant.name }}
           <span v-for="(price, key) in getPrice(restaurant.price)" :key="key">
-              {{price.value}}
-          </span><br/>
+            {{ price.value }} </span
+          ><br />
           <span v-for="star in getStar(restaurant.avgRating)" key="star.id" class="material-icons text-yellow-500">
-            {{ star.value }}
-          </span><br />
+            {{ star.value }} </span
+          ><br />
           {{ restaurant.city }}
           ●
           {{ restaurant.category }}
@@ -157,7 +153,7 @@ export default defineComponent({
     const watchData = (query) => {
       restaurants.splice(0, restaurants.length);
       detacher = FriendlyEatsData.getDocumentsInQuery(query, renderer());
-      
+
       if (!detacher) {
         store.commit("openModal", "getDocumentsInQueryNotImplmented");
       }

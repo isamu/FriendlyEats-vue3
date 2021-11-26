@@ -6,7 +6,7 @@ export const addRestaurant = (data) => {
   /*
     TODO: Implement adding a document
   */
-  return addDoc(collection(db, 'restaurants'), data);
+  return addDoc(collection(db, "restaurants"), data);
 };
 
 export const getAllRestaurants = () => {

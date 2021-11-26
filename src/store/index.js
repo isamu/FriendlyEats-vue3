@@ -19,7 +19,7 @@ export default createStore({
       state.showModal = true;
       state.errorType = errorType;
       state.errorMessage = errorMessage;
-    }
+    },
   },
   getters: {},
   actions: {},

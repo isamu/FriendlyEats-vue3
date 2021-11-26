@@ -11,7 +11,7 @@
             <div v-if="store.state.errorType == 'custom'">
               {{ store.state.errorMessage }}
             </div>
-            <div v-else >
+            <div v-else>
               {{ store.state.errorType }}
             </div>
           </div>
