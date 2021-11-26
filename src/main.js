@@ -1,24 +1,17 @@
-import Vue from 'vue'
-import VueI18n from 'vue-i18n';
-import '@/plugins/vuetify'
-import App from '@/components/App'
-import router from '@/router'
-import store from '@/store/index.js';
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import { createApp } from "vue";
+import { createI18n } from "vue-i18n";
 
-import data from '@/components/message'
+import App from "@/components/App";
+import router from "@/router";
+import store from "@/store/index.js";
 
-Vue.use(VueI18n);
+import "./index.css";
 
-const i18n = new VueI18n({
-  locale: 'ja',
-  messages: data
+import messages from "@/components/message";
+
+const i18n = createI18n({
+  locale: "ja",
+  messages,
 });
 
-new Vue({
-  router,
-  i18n: i18n,
-  store,
-  render: h => h(App),
-}).$mount('#app')
-
+createApp(App).use(store).use(router).use(i18n).mount("#app");

@@ -1,18 +1,27 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import * as getters from './getters'
-import * as actions from './actions'
-import mutations from './mutations'
+import { createStore } from "vuex";
 
-Vue.use(Vuex)
+export default createStore({
+  state: {
+    user: null,
+    user_loading: true,
 
-const state = {
-  user: null,
-  user_loading: true,
-}
-export default new Vuex.Store({
-  state,
-  getters,
-  actions,
-  mutations,
-})
+    showModal: false,
+    errorType: null,
+    errorMessage: null,
+  },
+  mutations: {
+    closeModal(state) {
+      state.showModal = false;
+      state.errorType = null;
+      state.errorMessage = null;
+    },
+    openModal(state, errorType, errorMessage) {
+      state.showModal = true;
+      state.errorType = errorType;
+      state.errorMessage = errorMessage;
+    },
+  },
+  getters: {},
+  actions: {},
+  modules: {},
+});
