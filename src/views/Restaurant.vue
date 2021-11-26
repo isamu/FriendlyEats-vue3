@@ -3,11 +3,11 @@
     <template v-if="restaurant">
       <div xs12 :style="{ backgroundImage: 'url(' + restaurant.photo + ')' }" class="imageHeader">
         <h2>{{ restaurant.name }}</h2>
-        <v-icon v-for="star in getStar(restaurant.avgRating)" v-bind:key="star.id" :style="{ color: '#fff' }">{{ star.value }}</v-icon
+        <span v-for="star in getStar(restaurant.avgRating)" :key="star.id" class="material-icons">{{ star.value }}</span
         ><br />
         {{ restaurant.city }} / {{ restaurant.category }}<br />
         <div class="iconBox">
-          <v-icon class="iconHover" @click="showModal = true">add_circle</v-icon>
+          <span class="material-icons" @click="showModal = true">add_circle</span>
         </div>
       </div>
       <template v-if="ratings.length === 0">
@@ -26,7 +26,7 @@
           <div xs8 class="ratingBox">
             <div :style="{ marginBottom: '10px' }">
               <span class="ratingStar">
-                <v-icon v-for="(l, star) in getStar(rating.rating)" color="#feb22c" :key="l">{{ star.value }}</v-icon
+                <span v-for="(star, l) in getStar(rating.rating)" class="material-icons text-yellow-500" :key="l">{{ star.value }}</span
                 ><br />
               </span>
               <span :style="{ color: '#999' }">{{ rating.userName }}</span>
@@ -76,29 +76,31 @@
 </template>
 
 <script>
+import { defineComponent, ref, reactive, onUnmounted } from "vue";
+import { useRoute } from "vue-router";
+import { onSnapshot } from "firebase/firestore";
+
 import * as FriendlyEatsData from "@/components/FriendlyEats.Data";
 import * as FriendlyEatsMock from "@/components/FriendlyEats.Mock";
 import modal from "@/components/modal";
 
 import { auth } from "../firebase/utils";
+import { getStar } from "./utils";
 
-export default {
+export default defineComponent({
   name: "Top",
   components: {
     modal,
   },
-  data() {
-    return {
-      restaurant: null,
-      ratings: [],
-      selectedRating: 5,
-      showModal: false,
-      message: "",
-    };
-  },
-  methods: {
-    AddRating: async function () {
-      const id = this.$route.params.id;
+  setup() {
+    const route = useRoute();
+    const { id } = route.params;
+
+    const restaurant = ref(null);
+    const ratings = reactive([]);
+    let detacher = null;
+
+    const AddRating = async () => {
       try {
         await FriendlyEatsMock.addMockRatings(id);
       } catch (e) {
@@ -106,23 +108,11 @@ export default {
           type: "restaurant.addRating",
         });
       }
-    },
-    getStar: function (rating) {
-      const ret = [];
-      for (let r = 0; r < 5; r += 1) {
-        if (r < Math.floor(rating)) {
-          ret.push({ id: r, value: "star" });
-        } else {
-          ret.push({ id: r, value: "star_border" });
-        }
-      }
-      return ret;
-    },
-    changeRating: function (rating) {
+    };
+    const changeRating = (rating) => {
       this.selectedRating = rating.id + 1;
-    },
-    saveRating: async function () {
-      const id = this.$route.params.id;
+    };
+    const saveRating = async () => {
       const res = await FriendlyEatsData.addRating(id, {
         rating: this.selectedRating,
         text: this.message,
@@ -139,31 +129,41 @@ export default {
           type: "restaurant.addRating",
         });
       }
-    },
-  },
-  async created() {
-    const id = this.$route.params.id;
-    const restaurant = await FriendlyEatsData.getRestaurant(id);
-    if (restaurant && restaurant.exists) {
-      this.restaurant = restaurant.data();
+    };
+    (async () => {
+      const restaurantDoc = await FriendlyEatsData.getRestaurant(id);
+      if (restaurantDoc && restaurantDoc.exists) {
+        restaurant.value = restaurantDoc.data();
 
-      const data = await FriendlyEatsData.getRating(id);
-      this.detacher = data.onSnapshot((snapshot) => {
-        this.ratings = [];
-        snapshot.forEach((doc) => {
-          const rating = doc.data();
-          rating.id = doc.id;
-          this.ratings.push(rating);
+        const data = await FriendlyEatsData.getRating(id);
+        detacher = onSnapshot(data, (snapshot) => {
+          ratings.splice(0, ratings.length);
+          snapshot.forEach((doc) => {
+            const rating = doc.data();
+            rating.id = doc.id;
+            ratings.push(rating);
+          });
         });
-      });
-    }
+      }
+    })();
+
+    onUnmounted(() => {
+      if (detacher) {
+        detacher();
+      }
+    });
+
+    return {
+      detacher,
+      restaurant,
+      ratings,
+      selectedRating: 5,
+      showModal: false,
+      message: "",
+      getStar,
+    };
   },
-  destroyed() {
-    if (this.detacher) {
-      this.detacher();
-    }
-  },
-};
+});
 </script>
 
 <style scoped>

@@ -42,12 +42,8 @@
         <div @click="link(restaurant.id)">
           <img :src="restaurant.photo" /><br />
           {{ restaurant.name }}
-          <span v-for="(price, key) in getPrice(restaurant.price)" :key="key">
-            {{ price.value }} </span
-          ><br />
-          <span v-for="star in getStar(restaurant.avgRating)" key="star.id" class="material-icons text-yellow-500">
-            {{ star.value }} </span
-          ><br />
+          <span v-for="(price, key) in getPrice(restaurant.price)" :key="key"> {{ price.value }} </span><br />
+          <span v-for="star in getStar(restaurant.avgRating)" key="star.id" class="material-icons text-yellow-500"> {{ star.value }} </span><br />
           {{ restaurant.city }}
           ●
           {{ restaurant.category }}
@@ -70,6 +66,7 @@ import Select from "@/components/Select";
 import { useRouter } from "vue-router";
 
 import { app } from "@/firebase/utils";
+import { getStar } from "./utils";
 
 export default defineComponent({
   name: "Top",
@@ -94,17 +91,6 @@ export default defineComponent({
       const ret = [];
       for (let r = 0; r < price; r += 1) {
         ret.push({ id: r, value: "$" });
-      }
-      return ret;
-    };
-    const getStar = (rating) => {
-      const ret = [];
-      for (let r = 0; r < 5; r += 1) {
-        if (r < Math.floor(rating)) {
-          ret.push({ id: r, value: "star" });
-        } else {
-          ret.push({ id: r, value: "star_border" });
-        }
       }
       return ret;
     };
