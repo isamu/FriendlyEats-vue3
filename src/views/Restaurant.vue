@@ -80,6 +80,7 @@
 <script>
 import { defineComponent, ref, reactive, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 import { onSnapshot } from "firebase/firestore";
 
 import * as FriendlyEatsData from "@/components/FriendlyEats.Data";
@@ -96,10 +97,17 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
+    const store = useStore();
+
     const { id } = route.params;
 
     const restaurant = ref(null);
     const ratings = reactive([]);
+
+    const showModal = ref(false);
+    const selectedRating = ref(5);;
+    const message = ref("");
+
     let detacher = null;
 
     const AddRating = async () => {
@@ -110,20 +118,20 @@ export default defineComponent({
       }
     };
     const changeRating = (rating) => {
-      this.selectedRating = rating.id + 1;
+      selectedRating.value = rating.id + 1;
     };
     const saveRating = async () => {
       const res = await FriendlyEatsData.addRating(id, {
-        rating: this.selectedRating,
-        text: this.message,
+        rating: selectedRating.value,
+        text: message.value,
         userName: "Anonymous (Web)",
         timestamp: new Date(),
-        userId: auth().currentUser.uid,
+        userId: auth.currentUser.uid,
       });
-      this.message = "";
-      this.selectedRating = 5;
-      this.showModal = false;
-
+      message.value = "";
+      selectedRating.value = 5;
+      showModal.value = false;
+      
       if (!res) {
         store.commit("openModal", "restaurant.addRating");
       }
@@ -155,10 +163,14 @@ export default defineComponent({
       detacher,
       restaurant,
       ratings,
-      selectedRating: 5,
-      showModal: false,
-      message: "",
+      selectedRating,
+      showModal,
+      message,
       getStar,
+
+      changeRating,
+      AddRating,
+      saveRating,
     };
   },
 });

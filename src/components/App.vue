@@ -13,7 +13,7 @@
       </div>
       <div v-show="navBar">
         <ul>
-          <li><a href="#">---</a></li>
+          <li><router-link to="/">TOP</router-link></li>
         </ul>
       </div>
     </header>
@@ -30,7 +30,7 @@
             {{ store.state.errorMessage }}
           </div>
           <div v-else>
-            {{ store.state.errorType }}
+              {{ $t(store.state.errorType) }}
           </div>
         </div>
         

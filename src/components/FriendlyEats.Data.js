@@ -17,7 +17,7 @@ export const getAllRestaurants = () => {
   const getAllRestaurantsQuery = query(collection(db, "restaurants"), orderBy("avgRating", "desc"), limit(50));
 
   return getAllRestaurantsQuery;
-  */
+*/
 };
 
 // eslint-disable-next-line

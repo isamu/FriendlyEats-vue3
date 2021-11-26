@@ -141,7 +141,7 @@ export default defineComponent({
       detacher = FriendlyEatsData.getDocumentsInQuery(query, renderer());
 
       if (!detacher) {
-        store.commit("openModal", "getDocumentsInQueryNotImplmented");
+        store.commit("openModal", "top.getDocumentsInQuery");
       }
     };
     const getAllRestaurants = () => {
@@ -150,7 +150,7 @@ export default defineComponent({
         watchData(query);
       } else {
         if (appData?.projectId) {
-          store.commit("openModal", "getAllRestaurantsNotImplmented");
+          store.commit("openModal", "top.getAllRestaurants");
         }
       }
     };
