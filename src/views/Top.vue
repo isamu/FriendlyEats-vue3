@@ -1,22 +1,21 @@
 <template>
   <div>
-    <div>
-      <div>
+    <div class="flex flex-wrap">
+      <div class="w-1/5">
         <Select v-model="city" :options="cityOptions" placeholder="都道府県"></Select>
       </div>
-      <div>
+      <div class="w-1/5">
         <Select v-model="category" :options="categoryOptions" placeholder="カテゴリー"></Select>
       </div>
-      <div>
+      <div class="w-1/5">
         <Select v-model="price" :options="priceOptions" placeholder="金額"></Select>
       </div>
-      <div>
+      <div class="w-1/5">
         <Select v-model="sortOrder" :options="sortOrderOptions" placeholder="順"></Select>
       </div>
-      <div>
-        <button class="h-10 w-32 rounded-lg bg-yellow-400" @click="filterData">Filter Data</button>
+      <div class="w-1/5">
+        <button class="h-10 w-32 rounded-lg bg-yellow-400" @click="filterData()">Filter Data</button>
       </div>
-      <div></div>
     </div>
     <div class="flex flex-wrap">
       <div class="text-center w-full" v-if="!appData?.projectId">
@@ -54,7 +53,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, onUnmounted } from "vue";
+import { defineComponent, reactive, onUnmounted, ref } from "vue";
 
 import { useStore } from "vuex";
 
@@ -79,6 +78,14 @@ export default defineComponent({
     let detacher = null;
     const appData = app._options;
 
+    const city = ref();
+    const category = ref();
+    const price = ref();
+    const sortOrder = ref();
+
+    const priceOptions = ["$", "$$", "$$$", "$$$$"];
+    const sortOrderOptions = ["Rating", "Reviews"];
+
     const importData = async () => {
       try {
         await FriendlyEatsMock.addMockRestaurants();
@@ -93,19 +100,6 @@ export default defineComponent({
         ret.push({ id: r, value: "$" });
       }
       return ret;
-    };
-    const filterData = () => {
-      // TODO
-      const filters = {
-        city: this.city || "Any",
-        category: this.category || "Any",
-        price: this.price || "Any",
-        sortOrder: this.sortOrder,
-      };
-      if (detacher) {
-        detacher();
-      }
-      this.getFilteredRestaurants(filters);
     };
     const link = (id) => {
       router.push({ name: "restaurant", params: { id } });
@@ -159,10 +153,21 @@ export default defineComponent({
       if (query) {
         watchData(query);
       } else {
-        this.$eventHub.$emit("openModal", {
-          type: "top.getFilteredRestaurants",
-        });
+        store.commit("openModal", "top.getFilteredRestaurants");
       }
+    };
+    const filterData = () => {
+      const filters = {
+        city: city.value ? FriendlyEats.data.cities[city.value] : "Any",
+        category: category.value ? FriendlyEats.data.categories[city.value] : "Any",
+        price: price.value || "Any",
+        sortOrder: sortOrder.value,
+      };
+      console.log(filters);
+      if (detacher) {
+        detacher();
+      }
+      getFilteredRestaurants(filters);
     };
 
     getAllRestaurants();
@@ -178,18 +183,20 @@ export default defineComponent({
       restaurants,
       detacher,
       categoryOptions: FriendlyEats.data.categories,
-      category: null,
+      category,
       cityOptions: FriendlyEats.data.cities,
-      city: null,
-      priceOptions: ["$", "$$", "$$$", "$$$$"],
-      price: null,
-      sortOrderOptions: ["Rating", "Reviews"],
-      sortOrder: null,
+      city,
+      priceOptions,
+      price,
+      sortOrderOptions,
+      sortOrder,
 
       getPrice,
       getStar,
       link,
       importData,
+
+      filterData,
     };
   },
 });

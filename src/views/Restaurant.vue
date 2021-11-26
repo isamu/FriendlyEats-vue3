@@ -46,19 +46,17 @@
               textAlign: 'center',
             }"
           >
-              <span v-for="star in getStar(selectedRating)" :key="star.id" v-on:mouseenter="changeRating(star)"
-                    class="material-icons text-yellow-500"
-                    >
-                {{ star.value }}
-              </span>
+            <span v-for="star in getStar(selectedRating)" :key="star.id" v-on:mouseenter="changeRating(star)" class="material-icons text-yellow-500">
+              {{ star.value }}
+            </span>
           </div>
           <div :style="{ borderBottom: '1px solid' }">
             <textarea v-model="message" class="textarea"> </textarea>
           </div>
         </div>
         <div slot="footer">
-          <button class="modal-default-button" @click="showModal = false"> CANCEL </button>
-          <button class="modal-default-button" @click="saveRating()"> SAVE </button>
+          <button class="modal-default-button" @click="showModal = false">CANCEL</button>
+          <button class="modal-default-button" @click="saveRating()">SAVE</button>
         </div>
       </modal>
     </template>
@@ -105,7 +103,7 @@ export default defineComponent({
     const ratings = reactive([]);
 
     const showModal = ref(false);
-    const selectedRating = ref(5);;
+    const selectedRating = ref(5);
     const message = ref("");
 
     let detacher = null;
@@ -131,7 +129,7 @@ export default defineComponent({
       message.value = "";
       selectedRating.value = 5;
       showModal.value = false;
-      
+
       if (!res) {
         store.commit("openModal", "restaurant.addRating");
       }

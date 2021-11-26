@@ -2,11 +2,9 @@
   <div>
     <header class="container mx-auto">
       <div class="flex justify-between items-center">
-          <h1 class="text-4xl font-bold">
-            <router-link to="/">
-                Friendly Eats
-            </router-link>
-          </h1>
+        <h1 class="text-4xl font-bold">
+          <router-link to="/"> Friendly Eats </router-link>
+        </h1>
         <div @click="openMenu()" class="cursor-pointer inline-flex justify-center items-center w-14 h-14 flex-shrink-0">
           <span class="material-icons text-warmgray-900 text-opacity-60">{{ navBar ? "close" : "menu" }}</span>
         </div>
@@ -24,19 +22,17 @@
         <div>
           <h3 class="text-2xl text-green-700 font-bold">Error</h3>
         </div>
-        
+
         <div class="mt-6">
           <div v-if="store.state.errorType == 'custom'">
             {{ store.state.errorMessage }}
           </div>
           <div v-else>
-              {{ $t(store.state.errorType) }}
+            {{ $t(store.state.errorType) }}
           </div>
         </div>
-        
-        <div class="modal-footer">
-        </div>
 
+        <div class="modal-footer"></div>
       </modal>
     </div>
   </div>

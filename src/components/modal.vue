@@ -54,7 +54,6 @@ export default defineComponent({
   font-family: Helvetica, Arial, sans-serif;
 }
 
-
 .modal-default-button {
   float: right;
 }
