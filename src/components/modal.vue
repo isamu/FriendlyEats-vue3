@@ -4,11 +4,16 @@
       <div class="modal-wrapper">
         <div class="modal-container" v-on:click.stop>
           <div class="modal-header">
-            <slot name="header"> </slot>
+            <h3>Error</h3>
           </div>
 
           <div class="modal-body">
-            <slot name="body"> default body </slot>
+            <div v-if="store.state.errorType == 'custom'">
+              {{ store.state.errorMessage }}
+            </div>
+            <div v-else >
+              {{ store.state.errorType }}
+            </div>
           </div>
 
           <div class="modal-footer">
@@ -21,9 +26,17 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+import { useStore } from "vuex";
+export default defineComponent({
   name: "Modal",
-};
+  setup() {
+    const store = useStore();
+    return {
+      store,
+    };
+  },
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

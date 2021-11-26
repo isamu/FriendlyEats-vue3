@@ -1,11 +1,12 @@
 import { db } from "@/firebase/utils";
-import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
+import { collection, query, orderBy, limit, onSnapshot, addDoc } from "firebase/firestore";
 
 // eslint-disable-next-line
 export const addRestaurant = (data) => {
   /*
     TODO: Implement adding a document
   */
+  return addDoc(collection(db, 'restaurants'), data);
 };
 
 export const getAllRestaurants = () => {

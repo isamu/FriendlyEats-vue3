@@ -1,7 +1,7 @@
 <template>
-  <v-layout row wrap>
+  <div>
     <template v-if="restaurant">
-      <v-flex xs12 :style="{ backgroundImage: 'url(' + restaurant.photo + ')' }" class="imageHeader">
+      <div xs12 :style="{ backgroundImage: 'url(' + restaurant.photo + ')' }" class="imageHeader">
         <h2>{{ restaurant.name }}</h2>
         <v-icon v-for="star in getStar(restaurant.avgRating)" v-bind:key="star.id" :style="{ color: '#fff' }">{{ star.value }}</v-icon
         ><br />
@@ -9,21 +9,21 @@
         <div class="iconBox">
           <v-icon class="iconHover" @click="showModal = true">add_circle</v-icon>
         </div>
-      </v-flex>
+      </div>
       <template v-if="ratings.length === 0">
-        <v-flex xs12>
+        <div xs12>
           <div id="guy-container" class="mdc-toolbar-fixed-adjust">
             <img class="guy" src="/img/guy_fireats.png" />
             <div class="text">This restaurant has no ratings.<br /></div>
             <br />
             <v-btn color="success" @click="AddRating">Add Rating</v-btn>
           </div>
-        </v-flex>
+        </div>
       </template>
       <template v-else>
         <div v-for="(rating, k) in ratings" :key="k">
-          <v-flex xs2 />
-          <v-flex xs8 class="ratingBox">
+          <div xs2 />
+          <div xs8 class="ratingBox">
             <div :style="{ marginBottom: '10px' }">
               <span class="ratingStar">
                 <v-icon v-for="(l, star) in getStar(rating.rating)" color="#feb22c" :key="l">{{ star.value }}</v-icon
@@ -32,8 +32,8 @@
               <span :style="{ color: '#999' }">{{ rating.userName }}</span>
             </div>
             {{ rating.text }}
-          </v-flex>
-          <v-flex xs2 />
+          </div>
+          <div xs2 />
         </div>
       </template>
       <modal v-if="showModal" @close="showModal = false">
@@ -61,7 +61,7 @@
       </modal>
     </template>
     <template v-else>
-      <v-flex xs12>
+      <div xs12>
         <div id="guy-container" class="mdc-toolbar-fixed-adjust">
           <img class="guy" src="/img/guy_fireats.png" />
           <div class="text">
@@ -70,9 +70,9 @@
           </div>
           <br />
         </div>
-      </v-flex>
+      </div>
     </template>
-  </v-layout>
+  </div>
 </template>
 
 <script>

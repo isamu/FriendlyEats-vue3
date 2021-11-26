@@ -14,29 +14,35 @@
         <Select v-model="sortOrder" :options="sortOrderOptions" placeholder="順"></Select>
       </div>
       <div>
-        <v-btn color="success" @click="filterData">Filter Data</v-btn>
+        <button
+          class="h-10 w-32 rounded-lg bg-yellow-400"
+          @click="filterData">Filter Data</button>
       </div>
       <div></div>
     </div>
     <div class="flex flex-wrap">
-      <template v-if="restaurants.length === 0">
-        <div />
+      <div class="text-center w-full" v-if="!appData?.projectId">
         <div>
-          <div id="guy-container" class="mdc-toolbar-fixed-adjust">
-            <img class="guy" src="/img/guy_fireats.png" />
-            <div class="text">
-              This app is connected to the Firebase project "<b>{{ appData.projectId }}</b
-              >".<br />
-              <br />
-              Your Cloud Firestore has no documents in <b>/restaurants/</b>.
-            </div>
-            <br />
-            <v-btn color="success" @click="importData">Import Data</v-btn>
-          </div>
+          This app is <b>not</b> connected to the Firebase project.
         </div>
-        <div />
-      </template>
-      <div class="w-1/3" v-for="restaurant in restaurants" :key="restaurant.id" >
+        setup Firebase
+      </div>
+      <div class="text-center w-full" v-else-if="restaurants.length === 0">
+        <div id="guy-container" class="mdc-toolbar-fixed-adjust">
+          <div class="mx-auto">
+            <img class="mx-auto w-4/12" src="/img/guy_fireats.png" />
+          </div>
+          <div>
+            This app is connected to the Firebase project "<b>{{ appData?.projectId }}</b
+                                                                                        >".<br />
+            <br />
+            Your Cloud Firestore has no documents in <b>/restaurants/</b>.
+          </div>
+          <br />
+          <button color="success" @click="importData()">Import Data</button>
+        </div>
+      </div>
+      <div class="w-1/3" v-for="restaurant in restaurants" :key="restaurant.id" v-else>
         <div @click="link(restaurant.id)">
           <img :src="restaurant.photo" /><br />
           {{ restaurant.name }}
@@ -58,6 +64,8 @@
 <script>
 import { defineComponent, reactive, onUnmounted } from "vue";
 
+import { useStore } from "vuex";
+
 import * as FriendlyEats from "@/components/FriendlyEats";
 import * as FriendlyEatsData from "@/components/FriendlyEats.Data";
 import * as FriendlyEatsMock from "@/components/FriendlyEats.Mock";
@@ -72,17 +80,18 @@ export default defineComponent({
   components: { Select },
   setup() {
     const router = useRouter();
+    const store = useStore();
+
     const restaurants = reactive([]);
     let detacher = null;
+    const appData = app._options;
 
     const importData = async () => {
       try {
         await FriendlyEatsMock.addMockRestaurants();
       } catch (e) {
-        // todo fix
-        this.$eventHub.$emit("openModal", {
-          type: "top.addRestaurant",
-        });
+        console.log(e);
+        store.commit("openModal", "top.addRestaurant");
       }
     };
     const getPrice = (price) => {
@@ -139,7 +148,6 @@ export default defineComponent({
           } else {
             restaurants.push(data);
           }
-          console.log(restaurants);
         },
         empty: () => {
           restaurants.splice(0, restaurants.length);
@@ -149,11 +157,19 @@ export default defineComponent({
     const watchData = (query) => {
       restaurants.splice(0, restaurants.length);
       detacher = FriendlyEatsData.getDocumentsInQuery(query, renderer());
+      
+      if (!detacher) {
+        store.commit("openModal", "getDocumentsInQueryNotImplmented");
+      }
     };
     const getAllRestaurants = () => {
       const query = FriendlyEatsData.getAllRestaurants();
       if (query) {
         watchData(query);
+      } else {
+        if (appData?.projectId) {
+          store.commit("openModal", "getAllRestaurantsNotImplmented");
+        }
       }
     };
     const getFilteredRestaurants = (filters) => {
@@ -167,7 +183,6 @@ export default defineComponent({
       }
     };
 
-    const appData = app._options;
     getAllRestaurants();
 
     onUnmounted(() => {
@@ -192,6 +207,7 @@ export default defineComponent({
       getPrice,
       getStar,
       link,
+      importData,
     };
   },
 });
