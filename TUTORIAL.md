@@ -351,7 +351,7 @@ export const getRestaurant = (id) => {
 すべての「点心（Dim Sum）」レストランを取得する簡単なクエリの例を次に示します。
 
 ```
-var filteredQuery = query.where('category', '==', 'Dim Sum')
+var filteredQuery = query(collection('restaurants'), where('category', '==', 'Dim Sum');
 ```
 
 その名前が示すように、`where()` メソッドは、条件に一致するフィールドを持つコレクション内のドキュメントを取得します。この場合、カテゴリが「点心（Dim Sum）」のレストランのみを取得しています。
@@ -368,26 +368,26 @@ var filteredQuery = query.where('category', '==', 'Dim Sum')
 
 ```
 export const getFilteredRestaurants = (filters) => {
-  let query = firebase.firestore().collection('restaurants');
+  let q = collection(db, 'restaurants');
 
   if (filters.category !== 'Any') {
-    query = query.where('category', '==', filters.category);
+    q = query(q, where('category', '==', filters.category));
   }
 
   if (filters.city !== 'Any') {
-    query = query.where('city', '==', filters.city);
+    q = query(q, where('city', '==', filters.city));
   }
 
   if (filters.price !== 'Any') {
-    query = query.where('price', '==', filters.price.length);
+    q = query(q, where('price', '==', filters.price));
   }
 
   if (filters.sort === 'Rating') {
-    query = query.orderBy('avgRating', 'desc');
+    q = query(q, orderBy('avgRating', 'desc'));
   } else if (filters.sort === 'Reviews') {
-    query = query.orderBy('numRatings', 'desc');
+    q = query(q, orderBy('numRatings', 'desc'));
   }
-  return query;
+  return q;
 };
 ```
 
@@ -456,19 +456,19 @@ firebase deploy --only firestore:indexes
 
 ```
 export const addRating = (restaurantID, rating) => {
-  const collection = firebase.firestore().collection('restaurants');
-  const document = collection.doc(restaurantID);
-  const newRatingDocument = document.collection('ratings').doc();
+  const restaurantCollection = collection(db, 'restaurants');
+  const restaurantDoc = doc(restaurantCollection, restaurantID);
+  const newRatingDocument = doc(collection(restaurantDoc, 'ratings'));
 
-  return firebase.firestore().runTransaction(function(transaction) {
-    return transaction.get(document).then(function(doc) {
+  return runTransaction(db, async (transaction) => {
+    return transaction.get(restaurantDoc).then(function(doc) {
       const data = doc.data();
 
       const newAverage =
             (data.numRatings * data.avgRating + rating.rating) /
             (data.numRatings + 1);
-
-      transaction.update(document, {
+      
+      transaction.update(restaurantDoc, {
         numRatings: data.numRatings + 1,
         avgRating: newAverage
       });

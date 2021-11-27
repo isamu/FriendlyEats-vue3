@@ -275,7 +275,7 @@
       <google-codelab-step label="データのソートと絞り込み" duration="0">
         <p>今のところ、アプリにはレストランのリストが表示されていますが、ユーザーがニーズに基づいてフィルタリングする方法はありません。このセクションでは、Cloud Firestoreの高度なクエリを使用してフィルタリングを有効にします。</p>
 <p>すべての「点心（Dim Sum）」レストランを取得する簡単なクエリの例を次に示します。</p>
-<pre><code>var filteredQuery = query.where(&#39;category&#39;, &#39;==&#39;, &#39;Dim Sum&#39;)
+<pre><code>var filteredQuery = query(collection(&#39;restaurants&#39;), where(&#39;category&#39;, &#39;==&#39;, &#39;Dim Sum&#39;);
 </code></pre>
 <p>その名前が示すように、<code>where()</code> メソッドは、条件に一致するフィールドを持つコレクション内のドキュメントを取得します。この場合、カテゴリが「点心（Dim Sum）」のレストランのみを取得しています。</p>
 <p>このアプリでは、ユーザーは複数のフィルターをチェーンして、「サンフランシスコのピザ」や「人気のあるロサンゼルスのシーフード」などの特定のクエリを作成できます。</p>
@@ -287,26 +287,26 @@
 </ol>
 <p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L28-L32.js" target="_blank">FriendlyEats.Data.js</a></p>
 <pre><code>export const getFilteredRestaurants = (filters) =&gt; {
-  let query = firebase.firestore().collection(&#39;restaurants&#39;);
+  let q = collection(db, &#39;restaurants&#39;);
 
   if (filters.category !== &#39;Any&#39;) {
-    query = query.where(&#39;category&#39;, &#39;==&#39;, filters.category);
+    q = query(q, where(&#39;category&#39;, &#39;==&#39;, filters.category));
   }
 
   if (filters.city !== &#39;Any&#39;) {
-    query = query.where(&#39;city&#39;, &#39;==&#39;, filters.city);
+    q = query(q, where(&#39;city&#39;, &#39;==&#39;, filters.city));
   }
 
   if (filters.price !== &#39;Any&#39;) {
-    query = query.where(&#39;price&#39;, &#39;==&#39;, filters.price.length);
+    q = query(q, where(&#39;price&#39;, &#39;==&#39;, filters.price));
   }
 
   if (filters.sort === &#39;Rating&#39;) {
-    query = query.orderBy(&#39;avgRating&#39;, &#39;desc&#39;);
+    q = query(q, orderBy(&#39;avgRating&#39;, &#39;desc&#39;));
   } else if (filters.sort === &#39;Reviews&#39;) {
-    query = query.orderBy(&#39;numRatings&#39;, &#39;desc&#39;);
+    q = query(q, orderBy(&#39;numRatings&#39;, &#39;desc&#39;));
   }
-  return query;
+  return q;
 };
 </code></pre>
 <p>上記のコードは、複数の<code>where</code>フィルターと1つの<code>orderBy</code>を追加して、ユーザー入力に基づいて複合クエリを作成します。このクエリは、ユーザーの要件に一致するレストランのみを返します。</p>
@@ -360,19 +360,19 @@
 </ol>
 <p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L34-L38.js" target="_blank">FriendlyEats.Data.js</a></p>
 <pre><code>export const addRating = (restaurantID, rating) =&gt; {
-  const collection = firebase.firestore().collection(&#39;restaurants&#39;);
-  const document = collection.doc(restaurantID);
-  const newRatingDocument = document.collection(&#39;ratings&#39;).doc();
+  const restaurantCollection = collection(db, &#39;restaurants&#39;);
+  const restaurantDoc = doc(restaurantCollection, restaurantID);
+  const newRatingDocument = doc(collection(restaurantDoc, &#39;ratings&#39;));
 
-  return firebase.firestore().runTransaction(function(transaction) {
-    return transaction.get(document).then(function(doc) {
+  return runTransaction(db, async (transaction) =&gt; {
+    return transaction.get(restaurantDoc).then(function(doc) {
       const data = doc.data();
 
       const newAverage =
             (data.numRatings * data.avgRating + rating.rating) /
             (data.numRatings + 1);
-
-      transaction.update(document, {
+      
+      transaction.update(restaurantDoc, {
         numRatings: data.numRatings + 1,
         avgRating: newAverage
       });
