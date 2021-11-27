@@ -3,6 +3,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import Top from "@/views/Top";
 import Restaurant from "@/views/Restaurant";
 
+import About from "@/components/About.vue";
+import NotFound from "@/components/NotFound.vue";
+
 const routes = [
   {
     path: "/",
@@ -13,6 +16,16 @@ const routes = [
     path: "/restaurant/:id",
     name: "restaurant",
     component: Restaurant,
+  },
+  {
+    path: "/about",
+    name: "about",
+    component: About,
+  },
+  {
+    path: "/:page(.*)",
+    name: "404",
+    component: NotFound,
   },
 ];
 

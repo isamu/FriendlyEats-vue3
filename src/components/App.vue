@@ -1,7 +1,7 @@
 <template>
   <div>
-    <header class="container mx-auto">
-      <div class="flex justify-between items-center">
+    <header class="w-full bg-blue-400">
+      <div class="flex justify-between items-center w-full">
         <h1 class="text-4xl font-bold">
           <router-link to="/"> Friendly Eats </router-link>
         </h1>
