@@ -118,7 +118,7 @@
 <li><code>const firebaseConfig</code> で始まる部分をコピーし、src/firebase/firebase.js 内の相当する部分を置き換えます<br></li>
 </ul>
 <h2 is-upgraded>スターターアプリをインポートする</h2>
-<p>IDE（WebStorm、Atom、Sublime、Visual Studio Code ...）を使用している場合、📁FriendlyEats-vueディレクトリを開くかインポートします。このディレクトリには、レストラン情報とオススメ情報を表示するアプリの未完成なモックコードが含まれています。チュートリアルを通してこのアプリを実装していくので、このモックコードを編集できる必要があります。</p>
+<p>IDE（WebStorm、Atom、Sublime、Visual Studio Code ...）を使用している場合、📁FriendlyEats-vue3ディレクトリを開くかインポートします。このディレクトリには、レストラン情報とオススメ情報を表示するアプリの未完成なモックコードが含まれています。チュートリアルを通してこのアプリを実装していくので、このモックコードを編集できる必要があります。</p>
 
 
       </google-codelab-step>
@@ -133,7 +133,7 @@
 <p>2 . 次のコマンドを実行して、CLIが正しくインストールされたことを確認します。</p>
 <pre><code>firebase --version
 </code></pre>
-<p>Firebase CLIのバージョンがv6.2.0以降であることを確認してください。</p>
+<p>Firebase CLIのバージョンがv9.0.0以降であることを確認してください。</p>
 <p>3 . 次のコマンドを実行して、Firebase CLIを認証します。</p>
 <pre><code>firebase login
 </code></pre>
@@ -178,7 +178,7 @@
 <li><code>addRestaurant</code> 関数を探します</li>
 <li>関数全体を以下のコードに置き換えます</li>
 </ol>
-<p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L4-L8.js" target="_blank">FriendlyEats.Data.js</a></p>
+<p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L5-L9.js" target="_blank">FriendlyEats.Data.js</a></p>
 <pre><code>export const addRestaurant = (data) =&gt; {
   return addDoc(collection(db, &#34;restaurants&#34;), data);
 };
@@ -214,7 +214,7 @@
 <li><code>getAllRestaurants</code> 関数を探します</li>
 <li>関数全体を以下のコードに置き換えます</li>
 </ol>
-<p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L10-L14.js" target="_blank">FriendlyEats.Data.js</a></p>
+<p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L11-L15.js" target="_blank">FriendlyEats.Data.js</a></p>
 <pre><code>export const getAllRestaurants = () =&gt; {
   return query(collection(db, &#34;restaurants&#34;), orderBy(&#34;avgRating&#34;, &#34;desc&#34;), limit(50));
 };
@@ -226,7 +226,7 @@
 <li><code>getDocumentsInQuery</code> 関数を探します</li>
 <li>関数全体を以下のコードに置き換えます</li>
 </ul>
-<p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L16-L20.js" target="_blank">FriendlyEats.Data.js</a></p>
+<p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L18-L22.js" target="_blank">FriendlyEats.Data.js</a></p>
 <pre><code>export const getDocumentsInQuery = (query, renderer) =&gt; {
   return onSnapshot(query, (snapshot) =&gt; {
     if (!snapshot.size) return renderer.empty();
@@ -260,7 +260,7 @@
 <li><code>getRestaurant</code>関数を探します</li>
 <li>関数全体を以下のコードに置き換えます</li>
 </ol>
-<p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L22-L26.js" target="_blank">FriendlyEats.Data.js</a></p>
+<p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L25-L29.js" target="_blank">FriendlyEats.Data.js</a></p>
 <pre><code>export const getRestaurant = (id) =&gt; {
   return getDoc(doc(db, `restaurants/${id}`));
 };
@@ -285,7 +285,7 @@
 <li><code>getFilteredRestaurants</code>を探します</li>
 <li>関数全体を以下のコードに置き換えます</li>
 </ol>
-<p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L28-L32.js" target="_blank">FriendlyEats.Data.js</a></p>
+<p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L32-L36.js" target="_blank">FriendlyEats.Data.js</a></p>
 <pre><code>export const getFilteredRestaurants = (filters) =&gt; {
   let q = collection(db, &#39;restaurants&#39;);
 
@@ -358,7 +358,7 @@
 <li><code>addRating</code> 関数を探す</li>
 <li>関数全体を以下のコードに置き換えます</li>
 </ol>
-<p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L34-L38.js" target="_blank">FriendlyEats.Data.js</a></p>
+<p><a href="https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L39-L43.js" target="_blank">FriendlyEats.Data.js</a></p>
 <pre><code>export const addRating = (restaurantID, rating) =&gt; {
   const restaurantCollection = collection(db, &#39;restaurants&#39;);
   const restaurantDoc = doc(restaurantCollection, restaurantID);
