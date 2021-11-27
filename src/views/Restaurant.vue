@@ -61,9 +61,9 @@
       </modal>
     </template>
     <template v-else>
-      <div xs12>
-        <div id="guy-container" class="mdc-toolbar-fixed-adjust">
-          <img class="guy" src="/img/guy_fireats.png" />
+      <div class="flex flex-wrap">
+        <div id="guy-container" class="text-center w-full">
+          <img class="mx-auto w-4/12" src="/img/guy_fireats.png" />
           <div class="text">
             No restaurant data.<br />
             Implement getRestaurant.
@@ -136,6 +136,9 @@ export default defineComponent({
     };
     (async () => {
       const restaurantDoc = await FriendlyEatsData.getRestaurant(id);
+      if (restaurantDoc === undefined) {
+        return store.commit("openModal", "restaurant.getRestaurant");
+      }
       if (restaurantDoc && restaurantDoc.exists) {
         restaurant.value = restaurantDoc.data();
 

@@ -1,6 +1,6 @@
 <template>
   <select :class="classValue || classDefault" @change="updateValue">
-    <option :value="null" :selected="modelValue === null || modelValue === undefined">
+    <option value="default" :selected="modelValue === null || modelValue === undefined" key="default">
       {{ placeholder }}
     </option>
     <option v-for="(option, index) in options" :value="index" :key="index" :selected="index == modelValue ? true : false">

@@ -24,11 +24,9 @@
         </div>
 
         <div class="mt-6">
-          <div v-if="store.state.errorType == 'custom'">
-            {{ store.state.errorMessage }}
-          </div>
-          <div v-else>
-            {{ $t(store.state.errorType) }}
+          {{ $t(store.state.errorType) }}
+          <div v-if="links[store.state.errorType]">
+            <a :href="links[store.state.errorType]" target="_blank" class="text-blue-600"> 実装方法はこちらを参照 </a>
           </div>
         </div>
 
@@ -45,6 +43,15 @@ import { useStore } from "vuex";
 import { auth } from "@/firebase/utils";
 import { signInAnonymously } from "firebase/auth";
 import modal from "@/components/modal";
+
+const links = {
+  "app.noConfig": "https://isamu.github.io/FriendlyEats-vue3/#1",
+  "app.noAuth": "https://isamu.github.io/FriendlyEats-vue3/#1",
+  "top.addRestaurant": "https://isamu.github.io/FriendlyEats-vue3/#4",
+  "top.getAllRestaurants": "https://isamu.github.io/FriendlyEats-vue3/#5",
+  "top.getFilteredRestaurants": "https://isamu.github.io/FriendlyEats-vue3/#7",
+  "restaurant.addRating": "https://isamu.github.io/FriendlyEats-vue3/#9",
+};
 
 export default defineComponent({
   name: "App",
@@ -95,8 +102,7 @@ export default defineComponent({
       closeModal,
       store,
 
-      errorType: null,
-      errorMessage: "",
+      links,
     };
   },
   methods: {},

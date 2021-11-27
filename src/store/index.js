@@ -7,18 +7,17 @@ export default createStore({
 
     showModal: false,
     errorType: null,
-    errorMessage: null,
+    link: null,
   },
   mutations: {
     closeModal(state) {
       state.showModal = false;
       state.errorType = null;
-      state.errorMessage = null;
+      state.link = null;
     },
-    openModal(state, errorType, errorMessage) {
+    openModal(state, errorType) {
       state.showModal = true;
       state.errorType = errorType;
-      state.errorMessage = errorMessage;
     },
   },
   getters: {},

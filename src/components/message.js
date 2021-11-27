@@ -7,11 +7,13 @@ const data = {
     },
     top: {
       addRestaurant: "src/components/FriendlyEats.Data.js の addRestaurant() が未実装です",
+      getDocumentsInQuery: "src/components/FriendlyEats.Data.js の getDocumentsInQuery() が未実装です",
       getFilteredRestaurants: "src/components/FriendlyEats.Data.js の getFilteredRestaurants() が未実装です",
       getAllRestaurants: "src/components/FriendlyEats.Data.js の getAllRestaurants() が未実装です",
     },
     restaurant: {
       addRating: "src/components/FriendlyEats.Data.js の addRating() が未実装です",
+      getRestaurant: "src/components/FriendlyEats.Data.js の getRestaurant() が未実装です",
     },
   },
   en: {

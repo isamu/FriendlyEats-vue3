@@ -21,6 +21,9 @@
       <div class="text-center w-full" v-if="!appData?.projectId">
         <div>This app is <b>not</b> connected to the Firebase project.</div>
         setup Firebase
+        <div>
+          <a href="https://isamu.github.io/FriendlyEats-vue3/#1" target="_blank" class="text-blue-600"> 設定方法はこちらを参照 </a>
+        </div>
       </div>
       <div class="text-center w-full" v-else-if="restaurants.length === 0">
         <div id="guy-container" class="mdc-toolbar-fixed-adjust">
@@ -158,12 +161,11 @@ export default defineComponent({
     };
     const filterData = () => {
       const filters = {
-        city: city.value ? FriendlyEats.data.cities[city.value] : "Any",
-        category: category.value ? FriendlyEats.data.categories[city.value] : "Any",
-        price: price.value || "Any",
-        sortOrder: sortOrder.value,
+        city: city.value === undefined || city.value === "default" ? "Any" : FriendlyEats.data.cities[city.value],
+        category: category.value === undefined || category.value === "default" ? "Any" : FriendlyEats.data.categories[category.value],
+        price: price.value === undefined || price.value === "default" ? "Any" : Number(price.value) + 1,
+        sort: sortOrder.value === undefined || sortOrder.value === "default" ? null : sortOrderOptions[sortOrder.value],
       };
-      console.log(filters);
       if (detacher) {
         detacher();
       }
