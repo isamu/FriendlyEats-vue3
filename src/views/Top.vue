@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-wrap">
+    <div class="flex flex-wrap mt-1">
       <div class="w-1/5">
         <Select v-model="city" :options="cityOptions" placeholder="都道府県"></Select>
       </div>

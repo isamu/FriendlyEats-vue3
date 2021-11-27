@@ -10,8 +10,13 @@
         </div>
       </div>
       <div v-show="navBar">
+        <hr/>
         <ul>
           <li><router-link to="/">TOP</router-link></li>
+        </ul>
+        <hr/>
+        <ul>
+          <li><router-link to="/about">About</router-link></li>
         </ul>
       </div>
     </header>
