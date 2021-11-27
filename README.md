@@ -8,6 +8,6 @@ This is yet another FriendlyEats based on [a start-up kit for a Firebase web pro
 
 ## Usege
 
-See [tutorial document](https://isamu.github.io/FriendlyEats-vue/) (All in Japanese)<br/>
-くわしくは、[チュートリアル](https://isamu.github.io/FriendlyEats-vue/) をご覧ください。
+See [tutorial document](https://isamu.github.io/FriendlyEats-vue3/) (All in Japanese)<br/>
+くわしくは、[チュートリアル](https://isamu.github.io/FriendlyEats-vue3/) をご覧ください。
 
