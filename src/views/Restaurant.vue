@@ -86,7 +86,8 @@ import * as FriendlyEatsMock from "@/components/FriendlyEats.Mock";
 import modal from "@/components/modal";
 
 import { auth } from "../firebase/utils";
-import { getStar } from "./utils";
+import { getStar } from "@/components/FriendlyEats";
+
 
 export default defineComponent({
   name: "Top",

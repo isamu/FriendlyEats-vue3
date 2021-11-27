@@ -3,8 +3,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import Top from "@/views/Top";
 import Restaurant from "@/views/Restaurant";
 
-import About from "@/components/About.vue";
-import NotFound from "@/components/NotFound.vue";
+import About from "@/views/About.vue";
+import NotFound from "@/views/NotFound.vue";
 
 const routes = [
   {

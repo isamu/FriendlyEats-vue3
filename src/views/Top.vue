@@ -60,6 +60,12 @@ import { defineComponent, reactive, onUnmounted, ref } from "vue";
 
 import { useStore } from "vuex";
 
+import {
+  priceOptions,
+  sortOrderOptions,
+  getStar,
+  getPrice,
+} from "@/components/FriendlyEats";
 import * as FriendlyEats from "@/components/FriendlyEats";
 import * as FriendlyEatsData from "@/components/FriendlyEats.Data";
 import * as FriendlyEatsMock from "@/components/FriendlyEats.Mock";
@@ -68,7 +74,6 @@ import Select from "@/components/Select";
 import { useRouter } from "vue-router";
 
 import { app } from "@/firebase/utils";
-import { getStar } from "./utils";
 
 export default defineComponent({
   name: "Top",
@@ -86,23 +91,12 @@ export default defineComponent({
     const price = ref();
     const sortOrder = ref();
 
-    const priceOptions = ["$", "$$", "$$$", "$$$$"];
-    const sortOrderOptions = ["Rating", "Reviews"];
-
     const importData = async () => {
       try {
         await FriendlyEatsMock.addMockRestaurants();
       } catch (e) {
-        console.log(e);
         store.commit("openModal", "top.addRestaurant");
       }
-    };
-    const getPrice = (price) => {
-      const ret = [];
-      for (let r = 0; r < price; r += 1) {
-        ret.push({ id: r, value: "$" });
-      }
-      return ret;
     };
     const link = (id) => {
       router.push({ name: "restaurant", params: { id } });
