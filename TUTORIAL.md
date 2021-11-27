@@ -128,7 +128,7 @@ Firebaseのコンソールから設定を取得し、src/firebase/firebase.js �
 
 ### スターターアプリをインポートする
 
-IDE（WebStorm、Atom、Sublime、Visual Studio Code ...）を使用している場合、📁FriendlyEats-vueディレクトリを開くかインポートします。このディレクトリには、レストラン情報とオススメ情報を表示するアプリの未完成なモックコードが含まれています。チュートリアルを通してこのアプリを実装していくので、このモックコードを編集できる必要があります。
+IDE（WebStorm、Atom、Sublime、Visual Studio Code ...）を使用している場合、📁FriendlyEats-vue3ディレクトリを開くかインポートします。このディレクトリには、レストラン情報とオススメ情報を表示するアプリの未完成なモックコードが含まれています。チュートリアルを通してこのアプリを実装していくので、このモックコードを編集できる必要があります。
 
 
 ## Firebase CLI (コマンドラインツール)のインストール
@@ -151,7 +151,7 @@ npm -g install firebase-tools
 firebase --version
 ```
 
-Firebase CLIのバージョンがv6.2.0以降であることを確認してください。
+Firebase CLIのバージョンがv9.0.0以降であることを確認してください。
 
 3 . 次のコマンドを実行して、Firebase CLIを認証します。
 
@@ -225,7 +225,7 @@ Firestoreデータは、コレクション、ドキュメント、フィール�
 1. `addRestaurant` 関数を探します
 1. 関数全体を以下のコードに置き換えます
 
-[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L4-L8.js)
+[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L5-L9.js)
 
 ```
 export const addRestaurant = (data) => {
@@ -273,7 +273,7 @@ Firebaseコンソールの「Cloud Firestore」タブに移動すると、`resta
 1. 関数全体を以下のコードに置き換えます
 
 
-[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L10-L14.js)
+[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L11-L15.js)
 
 ```
 export const getAllRestaurants = () => {
@@ -289,7 +289,7 @@ export const getAllRestaurants = () => {
 - `getDocumentsInQuery` 関数を探します
 - 関数全体を以下のコードに置き換えます
 
-[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L16-L20.js)
+[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L18-L22.js)
 
 ```
 export const getDocumentsInQuery = (query, renderer) => {
@@ -329,7 +329,7 @@ Note: `getDocs()`メソッドを使用することにより、更新通知を常
 1. `getRestaurant`関数を探します
 1. 関数全体を以下のコードに置き換えます
 
-[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L22-L26.js)
+[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L25-L29.js)
 
 ```
 export const getRestaurant = (id) => {
@@ -364,7 +364,7 @@ var filteredQuery = query(collection('restaurants'), where('category', '==', 'Di
 1. `getFilteredRestaurants`を探します
 1. 関数全体を以下のコードに置き換えます
 
-[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L28-L32.js)
+[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L32-L36.js)
 
 ```
 export const getFilteredRestaurants = (filters) => {
@@ -452,7 +452,7 @@ firebase deploy --only firestore:indexes
 1. `addRating` 関数を探す
 1. 関数全体を以下のコードに置き換えます
 
-[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L34-L38.js)
+[FriendlyEats.Data.js](https://github.com/isamu/FriendlyEats-vue3/blob/master/src/components/FriendlyEats.Data.js#L39-L43.js)
 
 ```
 export const addRating = (restaurantID, rating) => {

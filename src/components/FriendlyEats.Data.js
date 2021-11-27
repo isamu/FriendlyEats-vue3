@@ -44,7 +44,5 @@ export const addRating = (restaurantID, rating) => {
 
 // eslint-disable-next-line
 export const getRating = (id) => {
-  /*
-    TODO: Retrieve list of rating.
-  */
+  return query(collection(db, `restaurants/${id}/ratings`), orderBy("timestamp", "desc"));
 };
