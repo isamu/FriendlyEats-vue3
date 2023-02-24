@@ -19,6 +19,8 @@ export default createStore({
       state.showModal = true;
       state.errorType = errorType;
     },
+    setError(state, errorType) {
+    },
   },
   getters: {},
   actions: {},
