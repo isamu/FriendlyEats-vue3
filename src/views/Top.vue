@@ -1,21 +1,11 @@
 <template>
   <div>
-    <div class="flex flex-wrap mt-1">
-      <div class="w-1/5">
-        <Select v-model="city" :options="cityOptions" placeholder="都道府県"></Select>
-      </div>
-      <div class="w-1/5">
-        <Select v-model="category" :options="categoryOptions" placeholder="カテゴリー"></Select>
-      </div>
-      <div class="w-1/5">
-        <Select v-model="price" :options="priceOptions" placeholder="金額"></Select>
-      </div>
-      <div class="w-1/5">
-        <Select v-model="sortOrder" :options="sortOrderOptions" placeholder="順"></Select>
-      </div>
-      <div class="w-1/5">
-        <button class="h-10 w-32 rounded-lg bg-yellow-400" @click="filterData()">Filter Data</button>
-      </div>
+    <div class="flex flex-wrap items-center gap-3 p-3 bg-gray-50">
+      <Select v-model="city" :options="cityOptions" placeholder="都道府県"></Select>
+      <Select v-model="category" :options="categoryOptions" placeholder="カテゴリー"></Select>
+      <Select v-model="price" :options="priceOptions" placeholder="金額"></Select>
+      <Select v-model="sortOrder" :options="sortOrderOptions" placeholder="順"></Select>
+      <button class="h-10 px-5 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-100" @click="filterData()">Filter Data</button>
     </div>
     <div class="flex flex-wrap">
       <div class="text-center w-full" v-if="!appData?.projectId">

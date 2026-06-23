@@ -39,7 +39,7 @@ export default defineComponent({
         // context.emit("updateValue", e.target.value);
         context.emit("update:modelValue", e.target.value);
       },
-      classDefault: "form-select rounded-lg bg-warmgray-600 bg-opacity-5 focus:outline-none focus:ring-rose-600 focus:ring-2 focus:ring-opacity-20",
+      classDefault: "h-10 rounded border border-gray-300 bg-white px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400",
     };
   },
 });
