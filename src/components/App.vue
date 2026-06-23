@@ -1,21 +1,19 @@
 <template>
   <div>
-    <header class="w-full bg-blue-400">
-      <div class="flex justify-between items-center w-full">
-        <h1 class="text-4xl font-bold">
+    <header class="w-full bg-blue-500 text-white shadow-md">
+      <div class="flex items-center w-full h-16 px-4">
+        <div @click="openMenu()" class="cursor-pointer inline-flex justify-center items-center w-12 h-12 flex-shrink-0 rounded-full hover:bg-white/10">
+          <span class="material-icons">{{ navBar ? "close" : "menu" }}</span>
+        </div>
+        <h1 class="text-2xl font-medium ml-2">
           <router-link to="/"> Friendly Eats </router-link>
         </h1>
-        <div @click="openMenu()" class="cursor-pointer inline-flex justify-center items-center w-14 h-14 flex-shrink-0">
-          <span class="material-icons text-warmgray-900 text-opacity-60">{{ navBar ? "close" : "menu" }}</span>
-        </div>
       </div>
-      <div v-show="navBar">
-        <hr/>
-        <ul>
+      <div v-show="navBar" class="px-4 pb-2">
+        <ul class="border-t border-white/30 py-2">
           <li><router-link to="/">TOP</router-link></li>
         </ul>
-        <hr/>
-        <ul>
+        <ul class="border-t border-white/30 py-2">
           <li><router-link to="/about">About</router-link></li>
         </ul>
       </div>
